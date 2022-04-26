@@ -16,4 +16,5 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.usuarios = require("./usuarios.model.js")(sequelize, Sequelize);
 db.conversas = require("./conversas.model.js")(sequelize, Sequelize);
+db.conversas.belongsTo(db.usuarios, { foreignKey: 'con_fk_usu_codigo' });
 module.exports = db;

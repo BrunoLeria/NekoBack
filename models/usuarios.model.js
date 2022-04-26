@@ -2,6 +2,8 @@ module.exports = (sequelize, Sequelize) => {
   const Usuarios = sequelize.define("usuarios", {
     usu_codigo: {
       type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
     },
     usu_nome: {
       type: Sequelize.STRING,

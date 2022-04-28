@@ -5,10 +5,8 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Usuario
 exports.createUsuario = (req, res) => {
   // Validate request
-  if (!req.body.content) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
+  if (!req.body) {
+      console.log("Content can not be empty!");
   }
 
   // Create a Usuario
@@ -27,17 +25,12 @@ exports.createUsuario = (req, res) => {
     usu_foto: req.body.usu_foto,
   };
 
-  console.log(usuario.usu_cep);
-  // Save Usuario in the database
   Usuario.create(usuario)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Usuario.",
-      });
+      console.log(err.message || "Some error occurred while creating the Usuario.");
     });
 };
 // Create and Save a new Conversa

@@ -26,10 +26,45 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello World!" });
 });
 
-
 app.post("/createUsuario", (req, res) => {
   controler.createUsuario(req, res);
-  res.json({ message: "Process finished!" });
+});
+
+app.post("/createConversa", (req, res) => {
+  controler.createConversa(req, res);
+});
+
+app.get("/findAllUsuario", async (req, res) => {
+  let resp = await controler.findAllUsuario(req, res);
+  console.log("All Usuarios " +  resp);
+});
+
+app.get("/findAllConversa", (req, res) => {
+  controler.findAllConversa(req, res);
+});
+
+app.get("/findOneUsuario", (req, res) => {
+  controler.findOneUsuario(req, res);
+});
+
+app.get("/findOneConversa", (req, res) => {
+  controler.findOneConversa(req, res);
+});
+
+app.post("/updateUsuario", (req, res) => {
+  controler.updateUsuario(req, res);
+});
+
+app.post("/updateConversa", (req, res) => {
+  controler.updateConversa(req, res);
+});
+
+app.delete("/deleteUsuario", (req, res) => {
+  controler.deleteUsuario(req, res);
+});
+
+app.delete("/deleteConversa", (req, res) => {
+  controler.deleteConversa(req, res);
 });
 
 db.sequelize.sync();

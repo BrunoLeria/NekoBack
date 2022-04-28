@@ -3,15 +3,18 @@ const Usuario = db.usuarios;
 const Conversa = db.conversas;
 const Op = db.Sequelize.Op;
 // Create and Save a new Usuario
-exports.createUsuario = (req, res) => {
+exports.createUsuario = async (req, res) => {
   // Validate request
   if (!req.body) {
-      console.log("Content can not be empty!");
+    res.json({
+      message: err || "Content can not be empty!",
+    });
+    return;
   }
 
   // Create a Usuario
-  const usuario = {
-    usu_nome: req.body.usu_nome || "Untitled Usuario",
+  await Usuario.create({
+    usu_nome: req.body.usu_nome,
     usu_email: req.body.usu_email,
     usu_senha: req.body.usu_senha,
     usu_data_nascimento: req.body.usu_data_nascimento,
@@ -23,57 +26,81 @@ exports.createUsuario = (req, res) => {
     usu_cidade: req.body.usu_cidade,
     usu_estado: req.body.usu_estado,
     usu_foto: req.body.usu_foto,
-  };
-
-  Usuario.create(usuario)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log(err.message || "Some error occurred while creating the Usuario.");
+  })
+  .then((data) => {
+    res.json({
+      message: "Process finished! Usuario created successfully.",
     });
+  })
+  .catch((err) => {
+    res.json({
+      message: err || "Some error occurred while creating the Usuario.",
+    });
+  });
 };
 // Create and Save a new Conversa
 exports.createConversa = (req, res) => {
   // Validate request
-  if (!req.body.content) {
-    res.status(400).send({
-      message: "Content can not be empty!",
+  if (!req.body) {
+    res.json({
+      message: err || "Content can not be empty!",
     });
+    return;
   }
 
   // Create a Conversa
-  const conversa = {
-    con_codigo: req.body.con_codigo || "Untitled Conversa",
+  const conversa = {};
+
+  // Save Conversa in the database
+  Conversa.create({
+    con_codigo: req.body.con_codigo,
     con_fk_usu_codigo: req.body.con_fk_usu_codigo,
     con_messagens: req.body.con_messagens,
     con_data_hora: req.body.con_data_hora,
     con_cliente: req.body.con_cliente,
-  };
-
-  // Save Conversa in the database
-  Conversa.create(conversa)
+  })
     .then((data) => {
-      res.send(data);
+      res.json({
+        message: "Process finished! Conversa created successfully.",
+      });
     })
     .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Conversa.",
+      res.json({
+        message: err || "Some error occurred while creating the Conversa.",
       });
     });
 };
 // Retrieve all Usuarios from the database.
-exports.findAllUsuario = (req, res) => {
-  const usuarios = Usuario.findAll();
-  res.send(Usuarios.every((Usuario) => Usuario instanceof Usuario)); // true
-  res.send("All Usuarios:", JSON.stringify(Usuarios, null, 2));
+exports.findAllUsuario = async (req, res) => {
+  const usuarios = await Usuario.findAll();
+  if (
+    usuarios.length > 0 &&
+    usuarios.every((user) => user instanceof Usuario)
+  ) {
+    let result = [];
+    usuarios.forEach((user) => result.push(user.dataValues));
+    res.json({ return: result, message: "Process finished!" });
+    return true;
+  }
+
+  res.json({ message: "Process finished! No Usuarios found." });
+  return false; // true
 };
 // Retrieve all Conversas from the database.
 exports.findAllConversa = (req, res) => {
   const conversas = Conversa.findAll();
-  res.send(Conversas.every((Conversa) => Conversa instanceof Conversa)); // true
-  res.send("All Conversas:", JSON.stringify(Conversas, null, 2));
+  if (
+    conversas.length > 0 &&
+    conversas.every((talk) => talk instanceof Conversa)
+  ) {
+    let result = [];
+    conversas.forEach((talk) => result.push(talk.dataValues));
+    res.json({ return: result, message: "Process finished!" });
+    return true;
+  }
+
+  res.json({ message: "Process finished! No Conversas found." });
+  return false; // true
 };
 // Find a single Usuario with an id
 exports.findOneUsuario = (req, res) => {

@@ -2,14 +2,14 @@ const db = require("../models/db.model");
 const Usuario = db.usuarios;
 const Conversa = db.conversas;
 const Op = db.Sequelize.Op;
+const webhooks = require("node-webhooks");
 // Create and Save a new Usuario
 exports.createUsuario = async (req, res) => {
   // Validate request
   if (!req.body) {
-    res.json({
-      message: err || "Content can not be empty!",
+    return res.json({
+      message: err || "Conteúdo não pode estar vazio!",
     });
-    return;
   }
 
   // Create a Usuario
@@ -27,198 +27,210 @@ exports.createUsuario = async (req, res) => {
     usu_estado: req.body.usu_estado,
     usu_foto: req.body.usu_foto,
   })
-  .then((data) => {
-    res.json({
-      message: "Process finished! Usuario created successfully.",
-    });
-  })
-  .catch((err) => {
-    res.json({
-      message: err || "Some error occurred while creating the Usuario.",
-    });
-  });
-};
-// Create and Save a new Conversa
-exports.createConversa = (req, res) => {
-  // Validate request
-  if (!req.body) {
-    res.json({
-      message: err || "Content can not be empty!",
-    });
-    return;
-  }
-
-  // Create a Conversa
-  const conversa = {};
-
-  // Save Conversa in the database
-  Conversa.create({
-    con_codigo: req.body.con_codigo,
-    con_fk_usu_codigo: req.body.con_fk_usu_codigo,
-    con_messagens: req.body.con_messagens,
-    con_data_hora: req.body.con_data_hora,
-    con_cliente: req.body.con_cliente,
-  })
     .then((data) => {
-      res.json({
-        message: "Process finished! Conversa created successfully.",
+      return res.status(200).send({
+        message: "Usuário criado com sucesso!",
       });
     })
     .catch((err) => {
-      res.json({
-        message: err || "Some error occurred while creating the Conversa.",
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao criar usuário novo.",
+      });
+    });
+};
+// Create and Save a new Conversa
+exports.createConversa = async (req, res) => {
+  // Validate request
+  if (!req.body) {
+    return res.json({
+      message: err || "Conteúdo não pode estar vazio!",
+    });
+  }
+
+  // Save Conversa in the database
+  await Conversa.create({
+    con_fk_usu_codigo: req.body.con_fk_usu_codigo,
+    con_messagens: req.body.con_messagens,
+    con_cliente: req.body.con_cliente,
+    con_chat_id: req.body.con_chat_id,
+  })
+    .then((data) => {
+      const hooks = registerHooks();
+      hooks.trigger("callback_hook", {
+        msg: "Nova conversa criada.",
+        data: data.dataValues,
+      });
+      return res.status(200).send({
+        message: "Conversa criada com sucesso!",
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao criar conversa nova.",
       });
     });
 };
 // Retrieve all Usuarios from the database.
 exports.findAllUsuario = async (req, res) => {
-  const usuarios = await Usuario.findAll();
-  if (
-    usuarios.length > 0 &&
-    usuarios.every((user) => user instanceof Usuario)
-  ) {
-    let result = [];
-    usuarios.forEach((user) => result.push(user.dataValues));
-    res.json({ return: result, message: "Process finished!" });
-    return true;
-  }
-
-  res.json({ message: "Process finished! No Usuarios found." });
-  return false; // true
+  Usuario.findAll()
+    .then((data) => {
+      if (data.length < 1 && data.every((talk) => talk instanceof Conversa)) {
+        return res.send({
+          message: "Nenhum usuário encontrado.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar usuários.",
+      });
+    });
 };
 // Retrieve all Conversas from the database.
 exports.findAllConversa = (req, res) => {
-  const conversas = Conversa.findAll();
-  if (
-    conversas.length > 0 &&
-    conversas.every((talk) => talk instanceof Conversa)
-  ) {
-    let result = [];
-    conversas.forEach((talk) => result.push(talk.dataValues));
-    res.json({ return: result, message: "Process finished!" });
-    return true;
-  }
-
-  res.json({ message: "Process finished! No Conversas found." });
-  return false; // true
+  Conversa.findAll()
+    .then((data) => {
+      if (data.length < 1 && data.every((talk) => talk instanceof Conversa)) {
+        return res.send({
+          message: "Nenhuma conversa encontrada.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar conversas.",
+      });
+    });
 };
 // Find a single Usuario with an id
 exports.findOneUsuario = (req, res) => {
-  Usuario.findByPk(req.params.id)
+  Usuario.findByPk(req.query.id)
     .then((data) => {
-      res.send(data);
+      if (!data) {
+        return res.send({
+          message: "Usuário não encontrado com id = " + req.query.id,
+        });
+      }
+      return res.status(200).send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving Usuario with id=" + req.params.id,
+      return res.status(500).send({
+        message: "Erro ao buscar usuário com id = " + req.query.id,
       });
     });
 };
 // Find a single Conversa with an id
 exports.findOneConversa = (req, res) => {
-  Conversa.findByPk(req.params.id)
+  Conversa.findByPk(req.query.id)
     .then((data) => {
-      res.send(data);
+      if (!data) {
+        return res.send({
+          message: "Conversa não encontrada com id = " + req.query.id,
+        });
+      }
+      return res.status(200).send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving Conversa with id=" + req.params.id,
+      return res.status(500).send({
+        message: "Erro ao buscar coversa com id = " + req.query.id,
       });
     });
 };
 // Update a Usuario by the id in the request
 exports.updateUsuario = (req, res) => {
-  const id = req.params.id;
+  const id = req.query.id;
 
   Usuario.update(req.body, {
-    where: { id: id },
+    where: { usu_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "Usuario was updated successfully.",
+        return res.send({
+          message: "Usuario foi atualizado com sucesso!",
         });
       } else {
-        res.send({
-          message: `Cannot update Usuario with id=${id}. Maybe Usuario was not found or req.body is empty!`,
+        return res.send({
+          message: `Não foi possível atualizar o usuário com id = ${id}. Talvez o usuário não exista ou o body veio vazio.`,
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Usuario with id=" + id,
+      return res.status(500).send({
+        message: "Erro ao atualizar o usuário com o id = " + id,
       });
     });
 };
 // Update a Conversa by the id in the request
 exports.updateConversa = (req, res) => {
-  const id = req.params.id;
+  const id = req.query.id;
 
   Conversa.update(req.body, {
-    where: { id: id },
+    where: { con_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "Conversa was updated successfully.",
+        return res.send({
+          message: "Conversa foi atualizada com sucesso!",
         });
       } else {
-        res.send({
-          message: `Cannot update Conversa with id=${id}. Maybe Conversa was not found or req.body is empty!`,
+        return res.send({
+          message: `Não foi possível atualizar a conversa com id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Conversa with id=" + id,
+      return res.status(500).send({
+        message: "Erro ao atualizar a conversa com o id = " + id,
       });
     });
 };
 // Delete a Usuario with the specified id in the request
 exports.deleteUsuario = (req, res) => {
-  const id = req.params.id;
+  const id = req.query.id;
 
   Usuario.destroy({
-    where: { id: id },
+    where: { usu_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "Usuario was deleted successfully!",
+        return res.send({
+          message: "Usuario foi deletado com sucesso!",
         });
       } else {
-        res.send({
-          message: `Cannot delete Usuario with id=${id}. Maybe Usuario was not found!`,
+        return res.send({
+          message: `Não foi possível deletar o usuário com id = ${id}. Talvez o usuário não exista.`,
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Usuario with id=" + id,
+      return res.status(500).send({
+        message: "Erro ao deletar o usuário com o id = " + id,
       });
     });
 };
 // Delete a Conversa with the specified id in the request
 exports.deleteConversa = (req, res) => {
-  const id = req.params.id;
+  const id = req.query.id;
 
   Conversa.destroy({
-    where: { id: id },
+    where: { con_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
-          message: "Conversa was deleted successfully!",
+        return res.send({
+          message: "Conversa foi deletada com sucesso!",
         });
       } else {
-        res.send({
-          message: `Cannot delete Conversa with id=${id}. Maybe Conversa was not found!`,
+        return res.send({
+          message: `Não foi possível deletar a conversa com id = ${id}. Talvez a conversa não exista.`,
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Conversa with id=" + id,
+      return res.status(500).send({
+        message: "Erro ao deletar a conversa com o id = " + id,
       });
     });
 };
@@ -229,12 +241,14 @@ exports.deleteAllUsuario = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} Usuarios were deleted successfully!` });
+      return res.send({
+        message: `${nums} Usuarios were deleted successfully!`,
+      });
     })
     .catch((err) => {
-      res.status(500).send({
+      return res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Usuarios.",
+          err.message || "Some error occurred while removing all usuários.",
       });
     });
 };
@@ -245,12 +259,22 @@ exports.deleteAllConversa = (req, res) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} Conversas were deleted successfully!` });
+      return res.send({
+        message: `${nums} Conversas were deleted successfully!`,
+      });
     })
     .catch((err) => {
-      res.status(500).send({
+      return res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Conversas.",
+          err.message || "Some error occurred while removing all conversas.",
       });
     });
+};
+
+const registerHooks = () => {
+  return new webhooks({
+    db: {
+      callback_hook: ["http://localhost:3001/webhook-client"],
+    },
+  });
 };

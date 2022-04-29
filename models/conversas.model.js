@@ -18,11 +18,16 @@ module.exports = (sequelize, Sequelize) => {
       },
       con_data_hora: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false,
       },
       con_cliente: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+      con_chat_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
     },
     {

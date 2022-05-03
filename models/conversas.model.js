@@ -29,6 +29,14 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      con_chat_name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      con_from_me: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,

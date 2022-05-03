@@ -7,15 +7,13 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      usu_identificador: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       usu_nome: {
         type: Sequelize.STRING,
       },
       usu_email: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       usu_senha: {
         type: Sequelize.STRING,
@@ -38,11 +36,17 @@ module.exports = (sequelize, Sequelize) => {
       usu_complemento: {
         type: Sequelize.STRING,
       },
+      usu_bairro: {
+        type: Sequelize.STRING,
+      },
       usu_cidade: {
         type: Sequelize.STRING,
       },
       usu_estado: {
         type: Sequelize.STRING,
+      },
+      usu_estrangeiro: {
+        type: Sequelize.BOOLEAN,
       },
       usu_foto: {
         type: Sequelize.STRING,

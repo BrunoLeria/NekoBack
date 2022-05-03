@@ -3,14 +3,11 @@ const app = express();
 const port = 3005;
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const db = require("./models/db.model");
 const controler = require("./controllers/controller.js");
-let corsOptions = {
-  origin: "http://localhost:3005",
-};
 
-app.use(cors(corsOptions));
+app.use(cors());
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -36,7 +33,6 @@ app.post("/createConversa", (req, res) => {
 
 app.get("/findAllUsuario", async (req, res) => {
   let resp = await controler.findAllUsuario(req, res);
-  console.log("All Usuarios " +  resp);
 });
 
 app.get("/findAllConversa", (req, res) => {
@@ -45,6 +41,10 @@ app.get("/findAllConversa", (req, res) => {
 
 app.get("/findOneUsuario", (req, res) => {
   controler.findOneUsuario(req, res);
+});
+
+app.get("/findOneUsuarioByEmail", (req, res) => {
+  controler.findOneUsuarioByEmail(req, res);
 });
 
 app.get("/findOneConversa", (req, res) => {

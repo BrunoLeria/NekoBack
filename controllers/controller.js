@@ -23,6 +23,7 @@ exports.createUsuario = async (req, res) => {
     usu_endereco: req.body.usu_endereco,
     usu_numero: req.body.usu_numero,
     usu_complemento: req.body.usu_complemento,
+    usu_bairro: req.body.usu_bairro,
     usu_cidade: req.body.usu_cidade,
     usu_estado: req.body.usu_estado,
     usu_foto: req.body.usu_foto,
@@ -49,10 +50,13 @@ exports.createConversa = async (req, res) => {
 
   // Save Conversa in the database
   await Conversa.create({
-    con_fk_usu_codigo: req.body.con_fk_usu_codigo,
+    con_fk_usu_codigo: 1,
+    con_usu_identificador: req.body.con_usu_identificador,
     con_messagens: req.body.con_messagens,
     con_cliente: req.body.con_cliente,
     con_chat_id: req.body.con_chat_id,
+    con_chat_name: req.body.con_chat_name,
+    con_from_me: req.body.con_from_me,
   })
     .then((data) => {
       const hooks = registerHooks();
@@ -118,6 +122,23 @@ exports.findOneUsuario = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message: "Erro ao buscar usuário com id = " + req.query.id,
+      });
+    });
+};
+// Find a single Usuario with an email
+exports.findOneUsuarioByEmail = (req, res) => {
+  Usuario.findOne({ where: { usu_email: req.query.email } })
+    .then((data) => {
+      if (!data) {
+        return res.send({
+          message: "Usuário não encontrado com e-mail = " + req.query.email,
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: "Erro ao buscar usuário com e-mail = " + req.query.email,
       });
     });
 };

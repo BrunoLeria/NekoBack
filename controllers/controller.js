@@ -29,9 +29,7 @@ exports.createUsuario = async (req, res) => {
     usu_foto: req.body.usu_foto,
   })
     .then((data) => {
-      return res.status(200).send({
-        message: "Usuário criado com sucesso!",
-      });
+      return res.status(200).send(data);
     })
     .catch((err) => {
       return res.status(500).send({
@@ -64,9 +62,7 @@ exports.createConversa = async (req, res) => {
         msg: "Nova conversa criada.",
         data: data.dataValues,
       });
-      return res.status(200).send({
-        message: "Conversa criada com sucesso!",
-      });
+      return res.status(200).send(data);
     })
     .catch((err) => {
       return res.status(500).send({

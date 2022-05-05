@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-  const Conversas = sequelize.define(
-    "conversas",
+  const Talks = sequelize.define(
+    "talks",
     {
       con_identification: {
         type: Sequelize.INTEGER,
@@ -42,5 +42,5 @@ module.exports = (sequelize, Sequelize) => {
       timestamps: false,
     }
   );
-  return Conversas;
+  return Talks;
 };

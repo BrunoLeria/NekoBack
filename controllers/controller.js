@@ -1,6 +1,6 @@
 const db = require("../models/db.model");
 const User = db.users;
-const Conversa = db.conversas;
+const Talk = db.talks;
 const Op = db.Sequelize.Op;
 // Create and Save a new User
 exports.createUser = async (req, res) => {
@@ -37,8 +37,8 @@ exports.createUser = async (req, res) => {
       });
     });
 };
-// Create and Save a new Conversa
-exports.createConversa = async (req, res) => {
+// Create and Save a new Talk
+exports.createTalk = async (req, res) => {
   // Validate request
   if (!req.body) {
     return res.json({
@@ -46,8 +46,8 @@ exports.createConversa = async (req, res) => {
     });
   }
 
-  // Save Conversa in the database
-  await Conversa.create({
+  // Save Talk in the database
+  await Talk.create({
     con_fk_usu_identification: 1,
     con_message: req.body.con_message,
     con_date_time: req.body.con_date_time,
@@ -61,7 +61,7 @@ exports.createConversa = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao criar conversa nova.",
+        message: err.message || "Erro encontrado ao criar talk nova.",
       });
     });
 };
@@ -69,7 +69,7 @@ exports.createConversa = async (req, res) => {
 exports.findAllUser = async (req, res) => {
   User.findAll()
     .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Conversa)) {
+      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
         return res.send({
           message: "Nenhum usuário encontrado.",
         });
@@ -82,22 +82,22 @@ exports.findAllUser = async (req, res) => {
       });
     });
 };
-// Retrieve all Conversas from the database.
-exports.findAllConversa = (req, res) => {
-  Conversa.findAll({
+// Retrieve all Talks from the database.
+exports.findAllTalk = (req, res) => {
+  Talk.findAll({
     order: [["con_chat_id", "con_data_hora"]],
   })
     .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Conversa)) {
+      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
         return res.send({
-          message: "Nenhuma conversa encontrada.",
+          message: "Nenhuma talk encontrada.",
         });
       }
       return res.status(200).send(data);
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar conversas.",
+        message: err.message || "Erro encontrado ao buscar talks.",
       });
     });
 };
@@ -135,13 +135,13 @@ exports.findOneUserByEmail = (req, res) => {
       });
     });
 };
-// Find a single Conversa with an id
-exports.findOneConversa = (req, res) => {
-  Conversa.findByPk(req.query.id)
+// Find a single Talk with an id
+exports.findOneTalk = (req, res) => {
+  Talk.findByPk(req.query.id)
     .then((data) => {
       if (!data) {
         return res.send({
-          message: "Conversa não encontrada com id = " + req.query.id,
+          message: "Talk não encontrada com id = " + req.query.id,
         });
       }
       return res.status(200).send(data);
@@ -176,27 +176,27 @@ exports.updateUser = (req, res) => {
       });
     });
 };
-// Update a Conversa by the id in the request
-exports.updateConversa = (req, res) => {
+// Update a Talk by the id in the request
+exports.updateTalk = (req, res) => {
   const id = req.query.id;
 
-  Conversa.update(req.body, {
+  Talk.update(req.body, {
     where: { con_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "Conversa foi atualizada com sucesso!",
+          message: "Talk foi atualizada com sucesso!",
         });
       } else {
         return res.send({
-          message: `Não foi possível atualizar a conversa com id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
+          message: `Não foi possível atualizar a talk com id = ${id}. Talvez a talk não exista ou o body veio vazio.`,
         });
       }
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao atualizar a conversa com o id = " + id,
+        message: "Erro ao atualizar a talk com o id = " + id,
       });
     });
 };
@@ -224,27 +224,27 @@ exports.deleteUser = (req, res) => {
       });
     });
 };
-// Delete a Conversa with the specified id in the request
-exports.deleteConversa = (req, res) => {
+// Delete a Talk with the specified id in the request
+exports.deleteTalk = (req, res) => {
   const id = req.query.id;
 
-  Conversa.destroy({
+  Talk.destroy({
     where: { con_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "Conversa foi deletada com sucesso!",
+          message: "Talk foi deletada com sucesso!",
         });
       } else {
         return res.send({
-          message: `Não foi possível deletar a conversa com id = ${id}. Talvez a conversa não exista.`,
+          message: `Não foi possível deletar a talk com id = ${id}. Talvez a talk não exista.`,
         });
       }
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao deletar a conversa com o id = " + id,
+        message: "Erro ao deletar a talk com o id = " + id,
       });
     });
 };
@@ -266,21 +266,20 @@ exports.deleteAllUser = (req, res) => {
       });
     });
 };
-// Delete all Conversas from the database.
-exports.deleteAllConversa = (req, res) => {
-  Conversa.destroy({
+// Delete all Talks from the database.
+exports.deleteAllTalk = (req, res) => {
+  Talk.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
       return res.send({
-        message: `${nums} Conversas were deleted successfully!`,
+        message: `${nums} Talks were deleted successfully!`,
       });
     })
     .catch((err) => {
       return res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all conversas.",
+        message: err.message || "Some error occurred while removing all talks.",
       });
     });
 };

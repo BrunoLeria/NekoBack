@@ -27,16 +27,16 @@ app.post("/createUser", (req, res) => {
   controler.createUser(req, res);
 });
 
-app.post("/createConversa", (req, res) => {
-  controler.createConversa(req, res);
+app.post("/createTalk", (req, res) => {
+  controler.createTalk(req, res);
 });
 
 app.get("/findAllUser", async (req, res) => {
   let resp = await controler.findAllUser(req, res);
 });
 
-app.get("/findAllConversa", (req, res) => {
-  controler.findAllConversa(req, res);
+app.get("/findAllTalk", (req, res) => {
+  controler.findAllTalk(req, res);
 });
 
 app.get("/findOneUser", (req, res) => {
@@ -47,24 +47,24 @@ app.get("/findOneUserByEmail", (req, res) => {
   controler.findOneUserByEmail(req, res);
 });
 
-app.get("/findOneConversa", (req, res) => {
-  controler.findOneConversa(req, res);
+app.get("/findOneTalk", (req, res) => {
+  controler.findOneTalk(req, res);
 });
 
 app.post("/updateUser", (req, res) => {
   controler.updateUser(req, res);
 });
 
-app.post("/updateConversa", (req, res) => {
-  controler.updateConversa(req, res);
+app.post("/updateTalk", (req, res) => {
+  controler.updateTalk(req, res);
 });
 
 app.delete("/deleteUser", (req, res) => {
   controler.deleteUser(req, res);
 });
 
-app.delete("/deleteConversa", (req, res) => {
-  controler.deleteConversa(req, res);
+app.delete("/deleteTalk", (req, res) => {
+  controler.deleteTalk(req, res);
 });
 
 db.sequelize.sync();

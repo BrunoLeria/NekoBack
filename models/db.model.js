@@ -15,6 +15,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.users = require("./users.model.js")(sequelize, Sequelize);
-db.conversas = require("./conversas.model.js")(sequelize, Sequelize);
-db.conversas.belongsTo(db.users, { foreignKey: "con_fk_usu_codigo" });
+db.talks = require("./talks.model.js")(sequelize, Sequelize);
+db.talks.belongsTo(db.users, { foreignKey: "con_fk_usu_codigo" });
 module.exports = db;

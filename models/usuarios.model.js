@@ -1,13 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
-  const Usuarios = sequelize.define(
-    "usuarios",
+  const Users = sequelize.define(
+    "users",
     {
-      usu_codigo: {
+      usu_identification: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      usu_nome: {
+      usu_name: {
         type: Sequelize.STRING,
       },
       usu_email: {
@@ -15,40 +15,40 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         unique: true,
       },
-      usu_senha: {
+      usu_password: {
         type: Sequelize.STRING,
       },
-      usu_data_nascimento: {
+      usu_birthday: {
         type: Sequelize.DATEONLY,
       },
-      usu_telefone: {
+      usu_phone: {
         type: Sequelize.INTEGER,
       },
-      usu_cep: {
+      usu_postal_code: {
         type: Sequelize.INTEGER,
       },
-      usu_endereco: {
+      usu_adress: {
         type: Sequelize.STRING,
       },
-      usu_numero: {
+      usu_street_number: {
         type: Sequelize.INTEGER,
       },
-      usu_complemento: {
+      usu_complement: {
         type: Sequelize.STRING,
       },
-      usu_bairro: {
+      usu_neighborhood: {
         type: Sequelize.STRING,
       },
-      usu_cidade: {
+      usu_city: {
         type: Sequelize.STRING,
       },
-      usu_estado: {
+      usu_state: {
         type: Sequelize.STRING,
       },
-      usu_estrangeiro: {
+      usu_foreign: {
         type: Sequelize.BOOLEAN,
       },
-      usu_foto: {
+      usu_photo: {
         type: Sequelize.STRING,
       },
     },
@@ -56,5 +56,5 @@ module.exports = (sequelize, Sequelize) => {
       timestamps: false,
     }
   );
-  return Usuarios;
+  return Users;
 };

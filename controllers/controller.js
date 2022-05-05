@@ -1,10 +1,9 @@
 const db = require("../models/db.model");
-const Usuario = db.usuarios;
+const User = db.users;
 const Conversa = db.conversas;
 const Op = db.Sequelize.Op;
-const webhooks = require("node-webhooks");
-// Create and Save a new Usuario
-exports.createUsuario = async (req, res) => {
+// Create and Save a new User
+exports.createUser = async (req, res) => {
   // Validate request
   if (!req.body) {
     return res.json({
@@ -12,21 +11,22 @@ exports.createUsuario = async (req, res) => {
     });
   }
 
-  // Create a Usuario
-  await Usuario.create({
-    usu_nome: req.body.usu_nome,
+  // Create a User
+  await User.create({
+    usu_name: req.body.usu_name,
     usu_email: req.body.usu_email,
-    usu_senha: req.body.usu_senha,
-    usu_data_nascimento: req.body.usu_data_nascimento,
-    usu_telefone: req.body.usu_telefone,
-    usu_cep: req.body.usu_cep,
-    usu_endereco: req.body.usu_endereco,
-    usu_numero: req.body.usu_numero,
-    usu_complemento: req.body.usu_complemento,
-    usu_bairro: req.body.usu_bairro,
-    usu_cidade: req.body.usu_cidade,
-    usu_estado: req.body.usu_estado,
-    usu_foto: req.body.usu_foto,
+    usu_password: req.body.usu_password,
+    usu_birthday: req.body.usu_birthday,
+    usu_phone: req.body.usu_phone,
+    usu_postal_code: req.body.usu_postal_code,
+    usu_adress: req.body.usu_adress,
+    usu_street_number: req.body.usu_street_number,
+    usu_complement: req.body.usu_complement,
+    usu_neighborhood: req.body.usu_neighborhood,
+    usu_city: req.body.usu_city,
+    usu_state: req.body.usu_state,
+    usu_foreign: req.body.usu_foreign,
+    usu_photo: req.body.usu_photo,
   })
     .then((data) => {
       return res.status(200).send(data);
@@ -48,20 +48,15 @@ exports.createConversa = async (req, res) => {
 
   // Save Conversa in the database
   await Conversa.create({
-    con_fk_usu_codigo: 1,
-    con_usu_identificador: req.body.con_usu_identificador,
-    con_messagens: req.body.con_messagens,
-    con_cliente: req.body.con_cliente,
+    con_fk_usu_identification: 1,
+    con_message: req.body.con_message,
+    con_date_time: req.body.con_date_time,
+    con_client: req.body.con_client,
     con_chat_id: req.body.con_chat_id,
     con_chat_name: req.body.con_chat_name,
     con_from_me: req.body.con_from_me,
   })
     .then((data) => {
-      const hooks = registerHooks();
-      hooks.trigger("callback_hook", {
-        msg: "Nova conversa criada.",
-        data: data.dataValues,
-      });
       return res.status(200).send(data);
     })
     .catch((err) => {
@@ -70,9 +65,9 @@ exports.createConversa = async (req, res) => {
       });
     });
 };
-// Retrieve all Usuarios from the database.
-exports.findAllUsuario = async (req, res) => {
-  Usuario.findAll()
+// Retrieve all Users from the database.
+exports.findAllUser = async (req, res) => {
+  User.findAll()
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Conversa)) {
         return res.send({
@@ -89,7 +84,9 @@ exports.findAllUsuario = async (req, res) => {
 };
 // Retrieve all Conversas from the database.
 exports.findAllConversa = (req, res) => {
-  Conversa.findAll()
+  Conversa.findAll({
+    order: [["con_chat_id", "con_data_hora"]],
+  })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Conversa)) {
         return res.send({
@@ -104,9 +101,9 @@ exports.findAllConversa = (req, res) => {
       });
     });
 };
-// Find a single Usuario with an id
-exports.findOneUsuario = (req, res) => {
-  Usuario.findByPk(req.query.id)
+// Find a single User with an id
+exports.findOneUser = (req, res) => {
+  User.findByPk(req.query.id)
     .then((data) => {
       if (!data) {
         return res.send({
@@ -121,9 +118,9 @@ exports.findOneUsuario = (req, res) => {
       });
     });
 };
-// Find a single Usuario with an email
-exports.findOneUsuarioByEmail = (req, res) => {
-  Usuario.findOne({ where: { usu_email: req.query.email } })
+// Find a single User with an email
+exports.findOneUserByEmail = (req, res) => {
+  User.findOne({ where: { usu_email: req.query.email } })
     .then((data) => {
       if (!data) {
         return res.send({
@@ -155,17 +152,17 @@ exports.findOneConversa = (req, res) => {
       });
     });
 };
-// Update a Usuario by the id in the request
-exports.updateUsuario = (req, res) => {
+// Update a User by the id in the request
+exports.updateUser = (req, res) => {
   const id = req.query.id;
 
-  Usuario.update(req.body, {
+  User.update(req.body, {
     where: { usu_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "Usuario foi atualizado com sucesso!",
+          message: "User foi atualizado com sucesso!",
         });
       } else {
         return res.send({
@@ -203,17 +200,17 @@ exports.updateConversa = (req, res) => {
       });
     });
 };
-// Delete a Usuario with the specified id in the request
-exports.deleteUsuario = (req, res) => {
+// Delete a User with the specified id in the request
+exports.deleteUser = (req, res) => {
   const id = req.query.id;
 
-  Usuario.destroy({
+  User.destroy({
     where: { usu_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "Usuario foi deletado com sucesso!",
+          message: "User foi deletado com sucesso!",
         });
       } else {
         return res.send({
@@ -251,15 +248,15 @@ exports.deleteConversa = (req, res) => {
       });
     });
 };
-// Delete all Usuarios from the database.
-exports.deleteAllUsuario = (req, res) => {
-  Usuario.destroy({
+// Delete all Users from the database.
+exports.deleteAllUser = (req, res) => {
+  User.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
       return res.send({
-        message: `${nums} Usuarios were deleted successfully!`,
+        message: `${nums} Users were deleted successfully!`,
       });
     })
     .catch((err) => {
@@ -286,12 +283,4 @@ exports.deleteAllConversa = (req, res) => {
           err.message || "Some error occurred while removing all conversas.",
       });
     });
-};
-
-const registerHooks = () => {
-  return new webhooks({
-    db: {
-      callback_hook: ["http://localhost:3001/webhook-client"],
-    },
-  });
 };

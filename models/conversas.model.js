@@ -2,26 +2,26 @@ module.exports = (sequelize, Sequelize) => {
   const Conversas = sequelize.define(
     "conversas",
     {
-      con_codigo: {
+      con_identification: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      con_fk_usu_codigo: {
+      con_fk_usu_identification: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      con_messagens: {
+      con_message: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      con_data_hora: {
+      con_date_time: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
       },
-      con_cliente: {
+      con_client: {
         type: Sequelize.STRING,
         allowNull: true,
       },

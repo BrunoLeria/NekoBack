@@ -48,13 +48,13 @@ exports.createTalk = async (req, res) => {
 
   // Save Talk in the database
   await Talk.create({
-    con_fk_usu_identification: 1,
-    con_message: req.body.con_message,
-    con_date_time: req.body.con_date_time,
-    con_client: req.body.con_client,
-    con_chat_id: req.body.con_chat_id,
-    con_chat_name: req.body.con_chat_name,
-    con_from_me: req.body.con_from_me,
+    tlk_fk_usu_identification: 1,
+    tlk_message: req.body.tlk_message,
+    tlk_date_time: req.body.tlk_date_time,
+    tlk_client: req.body.tlk_client,
+    tlk_chat_id: req.body.tlk_chat_id,
+    tlk_chat_name: req.body.tlk_chat_name,
+    tlk_from_me: req.body.tlk_from_me,
   })
     .then((data) => {
       return res.status(200).send(data);
@@ -85,7 +85,7 @@ exports.findAllUser = async (req, res) => {
 // Retrieve all Talks from the database.
 exports.findAllTalk = (req, res) => {
   Talk.findAll({
-    order: [["con_chat_id", "con_data_hora"]],
+    order: [["tlk_chat_id", "tlk_data_hora"]],
   })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
@@ -181,7 +181,7 @@ exports.updateTalk = (req, res) => {
   const id = req.query.id;
 
   Talk.update(req.body, {
-    where: { con_codigo: id },
+    where: { tlk_codigo: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -229,7 +229,7 @@ exports.deleteTalk = (req, res) => {
   const id = req.query.id;
 
   Talk.destroy({
-    where: { con_codigo: id },
+    where: { tlk_codigo: id },
   })
     .then((num) => {
       if (num == 1) {

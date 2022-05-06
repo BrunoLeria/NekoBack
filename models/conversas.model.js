@@ -2,38 +2,38 @@ module.exports = (sequelize, Sequelize) => {
   const Talks = sequelize.define(
     "talks",
     {
-      con_identification: {
+      tlk_identification: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
-      con_fk_usu_identification: {
+      tlk_fk_usu_identification: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      con_message: {
+      tlk_message: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      con_date_time: {
+      tlk_date_time: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
       },
-      con_client: {
+      tlk_client: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      con_chat_id: {
+      tlk_chat_id: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      con_chat_name: {
+      tlk_chat_name: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      con_from_me: {
+      tlk_from_me: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },

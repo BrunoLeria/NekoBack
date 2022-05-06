@@ -157,7 +157,7 @@ exports.updateUser = (req, res) => {
   const id = req.query.id;
 
   User.update(req.body, {
-    where: { usu_codigo: id },
+    where: { usu_identification: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -181,7 +181,7 @@ exports.updateTalk = (req, res) => {
   const id = req.query.id;
 
   Talk.update(req.body, {
-    where: { tlk_codigo: id },
+    where: { tlk_identification: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -205,7 +205,7 @@ exports.deleteUser = (req, res) => {
   const id = req.query.id;
 
   User.destroy({
-    where: { usu_codigo: id },
+    where: { usu_identification: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -229,7 +229,7 @@ exports.deleteTalk = (req, res) => {
   const id = req.query.id;
 
   Talk.destroy({
-    where: { tlk_codigo: id },
+    where: { tlk_identification: id },
   })
     .then((num) => {
       if (num == 1) {

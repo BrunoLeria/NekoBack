@@ -85,7 +85,7 @@ exports.findAllUser = async (req, res) => {
 // Retrieve all Talks from the database.
 exports.findAllTalk = (req, res) => {
   Talk.findAll({
-    order: [["tlk_chat_id"], ["tlk_date_time"]],
+    order: [["tlk_date_time"], ["tlk_chat_id"]],
   })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {

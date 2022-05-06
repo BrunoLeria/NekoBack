@@ -19,7 +19,7 @@ exports.createUser = async (req, res) => {
     usu_birthday: req.body.usu_birthday,
     usu_phone: req.body.usu_phone,
     usu_postal_code: req.body.usu_postal_code,
-    usu_adress: req.body.usu_adress,
+    usu_address: req.body.usu_address,
     usu_street_number: req.body.usu_street_number,
     usu_complement: req.body.usu_complement,
     usu_neighborhood: req.body.usu_neighborhood,

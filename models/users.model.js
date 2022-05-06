@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
       usu_postal_code: {
         type: Sequelize.INTEGER,
       },
-      usu_adress: {
+      usu_address: {
         type: Sequelize.STRING,
       },
       usu_street_number: {

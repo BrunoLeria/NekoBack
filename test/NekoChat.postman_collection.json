@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b3d199c3-0127-404d-a598-ba83eca1115b",
+		"_postman_id": "1f51711e-3357-4fc4-a4e1-e1328569a256",
 		"name": "NekoChat",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -43,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"tlk_usu_identification\": \"554192002513@c.us\",\r\n    \"tlk_message\": \"mensagem do robô\",\r\n    \"tlk_client\": \"DESENV AQUICOB\",\r\n    \"tlk_chat_id\": \"554298574106@c.us\",\r\n    \"tlk_chat_name\": \"+55 42 9857-4106\",\r\n    \"tlk_from_me\": true\r\n}",
+					"raw": "{\r\n    \"tlk_usu_identification\": 1,\r\n    \"tlk_message\": \"mensagem mensagem mensagem mensagem mensagem mensagem do robô\",\r\n    \"tlk_client\": \"DESENV AQUICOB\",\r\n    \"tlk_chat_id\": \"554298571285@c.us\",\r\n    \"tlk_chat_name\": \"+55 42 9857-1285\",\r\n    \"tlk_from_me\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

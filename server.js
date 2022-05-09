@@ -1,22 +1,27 @@
 const express = require("express");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
 const app = express();
+const httpServer = createServer(app);
 const port = 3005;
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const db = require("./models/db.model");
 const controler = require("./controllers/controller.js");
+const console = require("console");
+
+// set port, listen for requests
+httpServer.listen(port, () => {
+  console.log(`Server is running on port ${port}.`);
+});
 
 app.use(cors());
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// set port, listen for requests
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}.`);
-});
 
 // simple route
 app.get("/", (req, res) => {
@@ -29,6 +34,7 @@ app.post("/createUser", (req, res) => {
 
 app.post("/createTalk", (req, res) => {
   controler.createTalk(req, res);
+  io.emit("newTalk", "Atualizar conversas");
 });
 
 app.get("/findAllUser", async (req, res) => {
@@ -68,3 +74,16 @@ app.delete("/deleteTalk", (req, res) => {
 });
 
 db.sequelize.sync();
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Conection to socket.io");
+  socket.on("message", ({ name, message }) => {
+    console.log(name, message);
+  });
+});

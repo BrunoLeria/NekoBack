@@ -27,6 +27,9 @@ exports.createUser = async (req, res) => {
     usu_state: req.body.usu_state,
     usu_foreign: req.body.usu_foreign,
     usu_photo: req.body.usu_photo,
+    usu_fk_ofc_identification: req.body.usu_fk_ofc_identification,
+    usu_fk_sts_identification: req.body.usu_fk_sts_identification,
+    usu_is_admin: req.body.usu_is_admin,
   })
     .then((data) => {
       return res.status(200).send(data);
@@ -61,7 +64,7 @@ exports.createTalk = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao criar talk nova.",
+        message: err.message || "Erro encontrado ao criar conversa nova.",
       });
     });
 };
@@ -90,14 +93,14 @@ exports.findAllTalk = (req, res) => {
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
         return res.send({
-          message: "Nenhuma talk encontrada.",
+          message: "Nenhuma conversa encontrada.",
         });
       }
       return res.status(200).send(data);
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar talks.",
+        message: err.message || "Erro encontrado ao buscar conversas.",
       });
     });
 };
@@ -141,7 +144,7 @@ exports.findOneTalk = (req, res) => {
     .then((data) => {
       if (!data) {
         return res.send({
-          message: "Talk não encontrada com id = " + req.query.id,
+          message: "Conversa não encontrada com id = " + req.query.id,
         });
       }
       return res.status(200).send(data);
@@ -162,7 +165,7 @@ exports.updateUser = (req, res) => {
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "User foi atualizado com sucesso!",
+          message: "Usuário foi atualizado com sucesso!",
         });
       } else {
         return res.send({
@@ -186,17 +189,17 @@ exports.updateTalk = (req, res) => {
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "Talk foi atualizada com sucesso!",
+          message: "Conversa foi atualizada com sucesso!",
         });
       } else {
         return res.send({
-          message: `Não foi possível atualizar a talk com id = ${id}. Talvez a talk não exista ou o body veio vazio.`,
+          message: `Não foi possível atualizar a conversa com id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
         });
       }
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao atualizar a talk com o id = " + id,
+        message: "Erro ao atualizar a conversa com o id = " + id,
       });
     });
 };
@@ -210,7 +213,7 @@ exports.deleteUser = (req, res) => {
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "User foi deletado com sucesso!",
+          message: "Usuário foi deletado com sucesso!",
         });
       } else {
         return res.send({
@@ -234,17 +237,17 @@ exports.deleteTalk = (req, res) => {
     .then((num) => {
       if (num == 1) {
         return res.send({
-          message: "Talk foi deletada com sucesso!",
+          message: "Conversa foi deletada com sucesso!",
         });
       } else {
         return res.send({
-          message: `Não foi possível deletar a talk com id = ${id}. Talvez a talk não exista.`,
+          message: `Não foi possível deletar a conversa com id = ${id}. Talvez a conversa não exista.`,
         });
       }
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao deletar a talk com o id = " + id,
+        message: "Erro ao deletar a conversa com o id = " + id,
       });
     });
 };

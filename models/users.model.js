@@ -51,6 +51,19 @@ module.exports = (sequelize, Sequelize) => {
       usu_photo: {
         type: Sequelize.STRING,
       },
+      usu_fk_ofc_identification: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      usu_fk_sts_identification: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      usu_is_admin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       timestamps: false,

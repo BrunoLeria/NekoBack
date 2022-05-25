@@ -38,7 +38,11 @@ app.post("/createTalk", (req, res) => {
 });
 
 app.get("/findAllUser", async (req, res) => {
-  let resp = await controler.findAllUser(req, res);
+  controler.findAllUser(req, res);
+});
+
+app.get("/findAllTeam", async (req, res) => {
+  controler.findAllTeam(req, res);
 });
 
 app.get("/findAllTalk", (req, res) => {

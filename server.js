@@ -57,12 +57,20 @@ app.get("/findOneTalk", (req, res) => {
   controler.findOneTalk(req, res);
 });
 
+app.get("/findAllTalkByUser", (req, res) => {
+  controler.findAllTalkByUser(req, res);
+});
+
 app.post("/updateUser", (req, res) => {
   controler.updateUser(req, res);
 });
 
 app.post("/updateTalk", (req, res) => {
   controler.updateTalk(req, res);
+});
+
+app.post("/updateTalkToSignInUser", (req, res) => {
+  controler.updateTalkToSignInUser(req, res);
 });
 
 app.delete("/deleteUser", (req, res) => {

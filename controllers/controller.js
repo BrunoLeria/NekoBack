@@ -1,6 +1,7 @@
 const db = require("../models/db.model");
 const User = db.users;
 const Talk = db.talks;
+const Offices = db.offices;
 const Op = db.Sequelize.Op;
 // Create and Save a new User
 exports.createUser = async (req, res) => {
@@ -48,23 +49,31 @@ exports.createTalk = async (req, res) => {
       message: err || "Conteúdo não pode estar vazio!",
     });
   }
-
-  // Save Talk in the database
-  await Talk.create({
-    tlk_fk_usu_identification: 1,
-    tlk_message: req.body.tlk_message,
-    tlk_date_time: req.body.tlk_date_time,
-    tlk_client: req.body.tlk_client,
-    tlk_chat_id: req.body.tlk_chat_id,
-    tlk_chat_name: req.body.tlk_chat_name,
-    tlk_from_me: req.body.tlk_from_me,
-  })
-    .then((data) => {
-      return res.status(200).send(data);
+  await Talk.findOne({ where: { tlk_chat_id: req.body.tlk_chat_id } })
+    .then(async (data) => {
+      // Save Talk in the database
+      await Talk.create({
+        tlk_fk_usu_identification: data ? data.tlk_fk_usu_identification : 1,
+        tlk_message: req.body.tlk_message,
+        tlk_date_time: req.body.tlk_date_time,
+        tlk_client: req.body.tlk_client,
+        tlk_chat_id: req.body.tlk_chat_id,
+        tlk_chat_name: req.body.tlk_chat_name,
+        tlk_from_me: req.body.tlk_from_me,
+      })
+        .then((data) => {
+          return res.status(200).send(data);
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            message: err.message || "Erro encontrado ao criar conversa nova.",
+          });
+        });
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao criar conversa nova.",
+        message:
+          err.message || "Erro encontrado ao validar conversas existentes",
       });
     });
 };
@@ -85,9 +94,66 @@ exports.findAllUser = async (req, res) => {
       });
     });
 };
+// Retrieve all Users from the database.
+exports.findAllTeam = async (req, res) => {
+  User.findAll({
+    attributes: [
+      "usu_identification",
+      "usu_name",
+      "usu_photo",
+      "usu_fk_ofc_identification",
+      "usu_fk_sts_identification",
+      "usu_is_admin",
+    ],
+    include: [
+      {
+        model: Offices,
+        attributes: ["ofc_identification", "ofc_name"],
+        where: ["usu_fk_ofc_identification = ofc_identification"],
+      },
+    ],
+  })
+    .then((data) => {
+      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+        return res.send({
+          message: "Nenhum usuário encontrado.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar usuários.",
+      });
+    });
+};
 // Retrieve all Talks from the database.
 exports.findAllTalk = (req, res) => {
   Talk.findAll({
+    order: [["tlk_date_time"], ["tlk_chat_id"]],
+  })
+    .then((data) => {
+      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+        return res.send({
+          message: "Nenhuma conversa encontrada.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar conversas.",
+      });
+    });
+};
+// Find all Talks from the database with a given user id
+exports.findAllTalkByUser = (req, res) => {
+  Talk.findAll({
+    where: {
+      tlk_fk_usu_identification: {
+        [Op.or]: [1, req.query.tlk_fk_usu_identification],
+      },
+    },
     order: [["tlk_date_time"], ["tlk_chat_id"]],
   })
     .then((data) => {
@@ -194,6 +260,30 @@ exports.updateTalk = (req, res) => {
       } else {
         return res.send({
           message: `Não foi possível atualizar a conversa com id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: "Erro ao atualizar a conversa com o id = " + id,
+      });
+    });
+};
+// Update all Talks with a given chat id with a given user id
+exports.updateTalkToSignInUser = (req, res) => {
+  const id = req.query.tlk_chat_id;
+
+  Talk.update(req.body, {
+    where: { tlk_chat_id: id },
+  })
+    .then((num) => {
+      if (num >= 1) {
+        return res.send({
+          message: "Conversa foi atualizada com sucesso!",
+        });
+      } else {
+        return res.send({
+          message: `Não foi possível atualizar a conversa com o chat id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
         });
       }
     })

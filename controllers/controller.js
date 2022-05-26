@@ -146,12 +146,38 @@ exports.findAllTalk = (req, res) => {
       });
     });
 };
+// Retrieve one Talk.
+exports.findOneTalkByChatId = (req, res) => {
+  Talk.findAll({
+    where: { tlk_chat_id: req.query.id },
+    order: [["tlk_date_time"], ["tlk_chat_id"]],
+  })
+    .then((data) => {
+      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+        return res.send({
+          message: "Nenhuma conversa encontrada.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar conversas.",
+      });
+    });
+};
 // Find all Talks from the database with a given user id
 exports.findAllTalkByUser = (req, res) => {
+  const maxDaysFromLastMessage = new Date();
+  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 15);
+
   Talk.findAll({
     where: {
       tlk_fk_usu_identification: {
-        [Op.or]: [1, req.query.tlk_fk_usu_identification],
+        [Op.or]: [1, req.query.id],
+      },
+      tlk_date_time: {
+        [Op.gt]: maxDaysFromLastMessage,
       },
     },
     order: [["tlk_date_time"], ["tlk_chat_id"]],
@@ -271,7 +297,7 @@ exports.updateTalk = (req, res) => {
 };
 // Update all Talks with a given chat id with a given user id
 exports.updateTalkToSignInUser = (req, res) => {
-  const id = req.query.tlk_chat_id;
+  const id = req.query.id;
 
   Talk.update(req.body, {
     where: { tlk_chat_id: id },

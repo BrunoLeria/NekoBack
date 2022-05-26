@@ -61,6 +61,10 @@ app.get("/findOneTalk", (req, res) => {
   controler.findOneTalk(req, res);
 });
 
+app.get("/findOneTalkByChatId", (req, res) => {
+  controler.findOneTalkByChatId(req, res);
+});
+
 app.get("/findAllTalkByUser", (req, res) => {
   controler.findAllTalkByUser(req, res);
 });

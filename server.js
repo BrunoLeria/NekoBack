@@ -79,6 +79,9 @@ app.post("/updateTalk", (req, res) => {
 
 app.post("/updateTalkToSignInUser", (req, res) => {
   controler.updateTalkToSignInUser(req, res);
+  if (req.query.updateOtherClients) {
+    io.emit("returnedToBot", "Atualizar outros clientes");
+  }
 });
 
 app.delete("/deleteUser", (req, res) => {

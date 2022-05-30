@@ -1,6 +1,7 @@
 const db = require("../models/db.model");
 const User = db.users;
 const Talk = db.talks;
+const Statuses = db.statuses;
 const Offices = db.offices;
 const Op = db.Sequelize.Op;
 // Create and Save a new User
@@ -81,7 +82,7 @@ exports.createTalk = async (req, res) => {
 exports.findAllUser = async (req, res) => {
   User.findAll()
     .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+      if (data.length < 1 && data.every((user) => user instanceof User)) {
         return res.send({
           message: "Nenhum usuário encontrado.",
         });
@@ -114,7 +115,7 @@ exports.findAllTeam = async (req, res) => {
     ],
   })
     .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+      if (data.length < 1 && data.every((user) => user instanceof User)) {
         return res.send({
           message: "Nenhum usuário encontrado.",
         });
@@ -146,6 +147,43 @@ exports.findAllTalk = (req, res) => {
       });
     });
 };
+
+//Find all status from the database.
+exports.findAllStatuses = (req, res) => {
+  Statuses.findAll()
+    .then((data) => {
+      if (data.length < 1 || data == null) {
+        return res.send({
+          message: "Nenhum status encontrado.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar status.",
+      });
+    });
+};
+
+//Find all status from the database.
+exports.findAllOffices = (req, res) => {
+  Offices.findAll()
+    .then((data) => {
+      if (data.length < 1 || data == null) {
+        return res.send({
+          message: "Nenhum cargo encontrado.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao cargo status.",
+      });
+    });
+};
+
 // Retrieve one Talk.
 exports.findOneTalkByChatId = (req, res) => {
   Talk.findAll({

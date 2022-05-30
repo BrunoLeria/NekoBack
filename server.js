@@ -49,6 +49,14 @@ app.get("/findAllTalk", (req, res) => {
   controler.findAllTalk(req, res);
 });
 
+app.get("/findAllStatuses", (req, res) => {
+  controler.findAllStatuses(req, res);
+});
+
+app.get("/findAllOffices", (req, res) => {
+  controler.findAllOffices(req, res);
+});
+
 app.get("/findOneUser", (req, res) => {
   controler.findOneUser(req, res);
 });

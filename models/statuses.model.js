@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
       sts_description: {
         type: Sequelize.STRING,
       },
+      sts_color: {
+        type: Sequelize.STRING,
+      },
     },
     {
       timestamps: false,

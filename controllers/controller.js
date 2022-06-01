@@ -106,13 +106,11 @@ exports.findAllTeam = async (req, res) => {
       "usu_fk_sts_identification",
       "usu_is_admin",
     ],
-    include: [
-      {
-        model: Offices,
-        attributes: ["ofc_identification", "ofc_name"],
-        where: ["usu_fk_ofc_identification = ofc_identification"],
+    where: {
+      usu_identification: {
+        [Op.not]: req.query.id,
       },
-    ],
+    },
   })
     .then((data) => {
       if (data.length < 1 && data.every((user) => user instanceof User)) {
@@ -168,7 +166,12 @@ exports.findAllStatuses = (req, res) => {
 
 //Find all status from the database.
 exports.findAllOffices = (req, res) => {
-  Offices.findAll()
+  Offices.findAll({
+    attributes: [
+      ["ofc_identification", "id"],
+      ["ofc_description", "name"],
+    ],
+  })
     .then((data) => {
       if (data.length < 1 || data == null) {
         return res.send({

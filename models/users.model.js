@@ -49,7 +49,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
       },
       usu_photo: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT("long"),
       },
       usu_fk_ofc_identification: {
         type: Sequelize.INTEGER,

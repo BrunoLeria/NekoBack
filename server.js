@@ -19,7 +19,9 @@ httpServer.listen(port, () => {
 
 app.use(cors());
 // parse requests of content-type - application/json
-app.use(bodyParser.json());
+app.use(bodyParser.json({ type: "application/gzip" }));
+app.use(bodyParser.json({ type: "application/json" }));
+app.use(bodyParser.json({ limit: "50mb" }));
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -79,6 +81,7 @@ app.get("/findAllTalkByUser", (req, res) => {
 
 app.post("/updateUser", (req, res) => {
   controler.updateUser(req, res);
+  io.emit("userUpdated", "Atualizar o time");
 });
 
 app.post("/updateTalk", (req, res) => {

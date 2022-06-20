@@ -210,7 +210,7 @@ exports.findOneTalkByChatId = (req, res) => {
 // Find all Talks from the database with a given user id
 exports.findAllTalkByUser = (req, res) => {
   const maxDaysFromLastMessage = new Date();
-  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 15);
+  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 30);
 
   Talk.findAll({
     where: {

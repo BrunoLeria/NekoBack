@@ -1,6 +1,6 @@
 module.exports = {
   HOST: "localhost",
-  USER: "phpmyadmin",
+  USER: "root",
   PASSWORD: "ba67dfd4uk8aa",
   DB: "app_neko_chat",
   dialect: "mysql",

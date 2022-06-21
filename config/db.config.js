@@ -1,7 +1,7 @@
 module.exports = {
   HOST: "localhost",
   USER: "root",
-  PASSWORD: "ba67dfd4uk8aa",
+  PASSWORD: "",
   DB: "app_neko_chat",
   dialect: "mysql",
   pool: {

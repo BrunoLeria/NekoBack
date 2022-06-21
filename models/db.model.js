@@ -3,6 +3,9 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
+  dialectOptions: {
+    socketPath: "/var/run/mysqld/mysqld.sock",
+  },
   operatorsAliases: false,
   pool: {
     max: dbConfig.pool.max,

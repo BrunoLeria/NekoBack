@@ -1,21 +1,29 @@
 const express = require("express");
-const { createServer } = require("http");
 const { Server } = require("socket.io");
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+const privateKey = fs.readFileSync("sslcert/privkey1.pem", "utf8");
+const certificate = fs.readFileSync("sslcert/fullchain1.pem", "utf8");
 
+const credentials = { key: privateKey, cert: certificate };
+
+// your express configuration here
 const app = express();
-const httpServer = createServer(app);
+const https = require("https");
+const fs = require("fs");
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 const port = 3005;
+const portHttps = 3006;
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const db = require("./models/db.model");
 const controler = require("./controllers/controller.js");
 const console = require("console");
 
-// set port, listen for requests
-httpServer.listen(port, () => {
-  console.log(`Server is running on port ${port}.`);
-});
+httpServer.listen(port);
+httpsServer.listen(portHttps);
 
 app.use(cors());
 // parse requests of content-type - application/json
@@ -104,6 +112,8 @@ app.delete("/deleteTalk", (req, res) => {
 });
 
 db.sequelize.sync();
+
+//Web-hook
 
 const io = new Server(httpServer, {
   cors: {

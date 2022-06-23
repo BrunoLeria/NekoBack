@@ -3,8 +3,8 @@ const { Server } = require("socket.io");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
-const privateKey = fs.readFileSync("sslcert/privkey1.pem", "utf8");
-const certificate = fs.readFileSync("sslcert/fullchain1.pem", "utf8");
+const privateKey = fs.readFileSync("./sslcert/privkey1.pem", "utf8");
+const certificate = fs.readFileSync("./sslcert/fullchain1.pem", "utf8");
 
 const credentials = { key: privateKey, cert: certificate };
 

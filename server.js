@@ -5,13 +5,8 @@ const http = require("http");
 const https = require("https");
 const privateKey = fs.readFileSync("./sslcert/privkey1.pem", "utf8");
 const certificate = fs.readFileSync("./sslcert/fullchain1.pem", "utf8");
-
 const credentials = { key: privateKey, cert: certificate };
-
-// your express configuration here
 const app = express();
-const https = require("https");
-const fs = require("fs");
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 const port = 3005;

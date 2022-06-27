@@ -362,6 +362,33 @@ exports.updateTalkToSignInUser = (req, res) => {
       });
     });
 };
+// Update a Talk by the id in the request
+exports.updateTalkSetHighPriority = (req, res) => {
+  const id = req.query.id;
+  const instance = req.query.instance;
+
+  Talk.update(req.body, {
+    where: {
+      [Op.and]: [{ tlk_chat_id: id }, { tlk_robot_instance: instance }],
+    },
+  })
+    .then((num) => {
+      if (num == 1) {
+        return res.send({
+          message: "Conversa foi atualizada com sucesso!",
+        });
+      } else {
+        return res.send({
+          message: `Não foi possível atualizar a conversa com id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: "Erro ao atualizar a conversa com o id = " + id,
+      });
+    });
+};
 // Delete a User with the specified id in the request
 exports.deleteUser = (req, res) => {
   const id = req.query.id;

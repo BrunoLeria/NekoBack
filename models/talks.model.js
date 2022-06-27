@@ -45,6 +45,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      tlk_high_priority: {
+        type: Sequelize.BOOLEAN,
+      },
     },
     {
       timestamps: false,

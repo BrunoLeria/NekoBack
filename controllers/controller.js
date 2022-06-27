@@ -131,7 +131,7 @@ exports.findAllTeam = async (req, res) => {
 // Retrieve all Talks from the database.
 exports.findAllTalk = (req, res) => {
   Talk.findAll({
-    order: [["tlk_date_time", "DESC"], ["tlk_chat_id"]],
+    order: [["tlk_date_time", "DESC"], ["tlk_chat_id"], ["tlk_high_priority"]],
   })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
@@ -223,7 +223,7 @@ exports.findAllTalkByUser = (req, res) => {
         [Op.gt]: maxDaysFromLastMessage,
       },
     },
-    order: [["tlk_date_time"], ["tlk_chat_id"]],
+    order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
   })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {

@@ -65,7 +65,7 @@ exports.createTalk = async (req, res) => {
         tlk_robot_token: req.body.tlk_robot_token,
       })
         .then((data) => {
-          return res.status(200).send(data);
+          return res.status(200).send("Conversa criada com sucesso!");
         })
         .catch((err) => {
           return res.status(500).send({

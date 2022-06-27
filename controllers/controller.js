@@ -61,6 +61,8 @@ exports.createTalk = async (req, res) => {
         tlk_chat_id: req.body.tlk_chat_id,
         tlk_chat_name: req.body.tlk_chat_name,
         tlk_from_me: req.body.tlk_from_me,
+        tlk_robot_instance: req.body.tlk_robot_instance,
+        tlk_robot_token: req.body.tlk_robot_token,
       })
         .then((data) => {
           return res.status(200).send(data);

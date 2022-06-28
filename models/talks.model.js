@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       tlk_message: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT("long"),
         allowNull: false,
       },
       tlk_date_time: {

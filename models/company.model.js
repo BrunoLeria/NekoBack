@@ -39,7 +39,7 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: "",
     },
     cpn_guild_name: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(250),
       allowNull: false,
       defaultValue: "",
     },
@@ -49,7 +49,7 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: "",
     },
     cpn_guild_fantasy_name: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(250),
       allowNull: false,
       defaultValue: "",
     },
@@ -69,9 +69,13 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.NOW,
     },
     cpn_observation: { type: Sequelize.TEXT("long") },
-    cpn_contact: { type: Sequelize.STRING, allowNull: false, defaultValue: "" },
+    cpn_contact: {
+      type: Sequelize.STRING(250),
+      allowNull: false,
+      defaultValue: "",
+    },
     cpn_technician_name: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(250),
       allowNull: false,
       defaultValue: "",
     },
@@ -81,7 +85,7 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: "",
     },
     cpn_technician_email: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(250),
       allowNull: false,
       defaultValue: "",
     },

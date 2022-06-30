@@ -1,9 +1,53 @@
 const db = require("../models/db.model");
+const Companies = db.companies;
 const User = db.users;
 const Talk = db.talks;
 const Statuses = db.statuses;
 const Offices = db.offices;
 const Op = db.Sequelize.Op;
+
+// Create and Save a ne company
+exports.createCompany = async (req, res) => {
+  // Validate request
+  if (!req.body) {
+    return res.json({
+      message: err || "Conteúdo não pode estar vazio!",
+    });
+  }
+
+  // Create a company
+  await Companies.create({
+    cpn_name: req.body.cpn_name,
+    cpn_number_of_users: req.body.cpn_number_of_users,
+    cpn_status: req.body.cpn_status,
+    cpn_postal_code: req.body.cpn_postal_code,
+    cpn_adress: req.body.cpn_adress,
+    cpn_street_number: req.body.cpn_street_number,
+    cpn_neighborhood: req.body.cpn_neighborhood,
+    cpn_city: req.body.cpn_city,
+    cpn_state: req.body.cpn_state,
+    cpn_guild_name: req.body.cpn_guild_name,
+    cpn_guild_document: req.body.cpn_guild_document,
+    cpn_guild_fantasy_name: req.body.cpn_guild_fantasy_name,
+    cpn_type: req.body.cpn_type,
+    cpn_size: req.body.cpn_size,
+    cpn_insert_date: req.body.cpn_insert_date,
+    cpn_observation: req.body.cpn_observation,
+    cpn_contact: req.body.cpn_contact,
+    cpn_technician_name: req.body.cpn_technician_name,
+    cpn_technician_phone: req.body.cpn_technician_phone,
+    cpn_technician_email: req.body.cpn_technician_email,
+  })
+    .then((data) => {
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao criar empresa nova.",
+      });
+    });
+};
+
 // Create and Save a new User
 exports.createUser = async (req, res) => {
   // Validate request
@@ -77,6 +121,23 @@ exports.createTalk = async (req, res) => {
       return res.status(500).send({
         message:
           err.message || "Erro encontrado ao validar conversas existentes",
+      });
+    });
+};
+// Retrieve all Companies from the database.
+exports.findAllCompanies = async (req, res) => {
+  await Companies.findAll()
+    .then((data) => {
+      if (data.length < 1 && data.every((user) => user instanceof User)) {
+        return res.send({
+          message: "Nenhuma empresa encontrada.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar empresas.",
       });
     });
 };
@@ -189,6 +250,24 @@ exports.findAllOffices = (req, res) => {
     });
 };
 
+// Retrieve one Company from the database.
+exports.findOneCompany = async (req, res) => {
+  await Companies.findByPk(req.query.id)
+    .then((data) => {
+      if (!data) {
+        return res.status(404).send({
+          message: "Empresa não encontrada.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar empresa.",
+      });
+    });
+};
+
 // Retrieve one Talk.
 exports.findOneTalkByChatId = (req, res) => {
   Talk.findAll({
@@ -290,6 +369,27 @@ exports.findOneTalk = (req, res) => {
       });
     });
 };
+//Update a Company with an id
+exports.updateCompany = (req, res) => {
+  const id = req.query.id;
+  Companies.update(req.body, { where: { com_identification: id } })
+    .then((data) => {
+      if (data == 0) {
+        return res.status(404).send({
+          message: "Empresa não encontrada.",
+        });
+      }
+      return res.status(200).send({
+        message: "Empresa atualizada com sucesso.",
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro ao atualizar empresa.",
+      });
+    });
+};
+
 // Update a User by the id in the request
 exports.updateUser = (req, res) => {
   const id = req.query.id;
@@ -437,6 +537,29 @@ exports.deleteTalk = (req, res) => {
       });
     });
 };
+exports.deleteCompany = (req, res) => {
+  const id = req.query.id;
+
+  Company.destroy({
+    where: { com_identification: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        return res.send({
+          message: "Empresa foi deletada com sucesso!",
+        });
+      } else {
+        return res.send({
+          message: `Não foi possível deletar a empresa com id = ${id}. Talvez a empresa não exista.`,
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: "Erro ao deletar a empresa com o id = " + id,
+      });
+    });
+};
 // Delete all Users from the database.
 exports.deleteAllUser = (req, res) => {
   User.destroy({
@@ -469,6 +592,24 @@ exports.deleteAllTalk = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message: err.message || "Some error occurred while removing all talks.",
+      });
+    });
+};
+// Delete all Companies from the database.
+exports.deleteAllCompanies = (req, res) => {
+  Company.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      return res.send({
+        message: `${nums} Companies were deleted successfully!`,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message:
+          err.message || "Some error occurred while removing all companies.",
       });
     });
 };

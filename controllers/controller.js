@@ -61,9 +61,11 @@ exports.createTalk = async (req, res) => {
         tlk_chat_id: req.body.tlk_chat_id,
         tlk_chat_name: req.body.tlk_chat_name,
         tlk_from_me: req.body.tlk_from_me,
+        tlk_robot_instance: req.body.tlk_robot_instance,
+        tlk_robot_token: req.body.tlk_robot_token,
       })
         .then((data) => {
-          return res.status(200).send(data);
+          return res.status(200).send("Conversa criada com sucesso!");
         })
         .catch((err) => {
           return res.status(500).send({
@@ -129,7 +131,7 @@ exports.findAllTeam = async (req, res) => {
 // Retrieve all Talks from the database.
 exports.findAllTalk = (req, res) => {
   Talk.findAll({
-    order: [["tlk_date_time", "DESC"], ["tlk_chat_id"]],
+    order: [["tlk_date_time", "DESC"], ["tlk_chat_id"], ["tlk_high_priority"]],
   })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
@@ -221,7 +223,7 @@ exports.findAllTalkByUser = (req, res) => {
         [Op.gt]: maxDaysFromLastMessage,
       },
     },
-    order: [["tlk_date_time"], ["tlk_chat_id"]],
+    order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
   })
     .then((data) => {
       if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
@@ -351,6 +353,33 @@ exports.updateTalkToSignInUser = (req, res) => {
       } else {
         return res.send({
           message: `Não foi possível atualizar a conversa com o chat id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: "Erro ao atualizar a conversa com o id = " + id,
+      });
+    });
+};
+// Update a Talk by the id in the request
+exports.updateTalkSetHighPriority = (req, res) => {
+  const id = req.query.id;
+  const instance = req.query.instance;
+
+  Talk.update(req.body, {
+    where: {
+      [Op.and]: [{ tlk_chat_id: id }, { tlk_robot_instance: instance }],
+    },
+  })
+    .then((num) => {
+      if (num == 1) {
+        return res.send({
+          message: "Conversa foi atualizada com sucesso!",
+        });
+      } else {
+        return res.send({
+          message: `Não foi possível atualizar a conversa com id = ${id}. Talvez a conversa não exista ou o body veio vazio.`,
         });
       }
     })

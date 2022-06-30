@@ -41,6 +41,17 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
+      tlk_robot_instance: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      tlk_robot_token: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      tlk_high_priority: {
+        type: Sequelize.BOOLEAN,
+      },
     },
     {
       timestamps: false,

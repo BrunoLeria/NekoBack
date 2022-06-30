@@ -97,6 +97,10 @@ app.post("/updateTalkToSignInUser", (req, res) => {
     io.emit("returnedToBot", "Atualizar outros clientes");
   }
 });
+app.post("/updateTalkSetHighPriority", (req, res) => {
+  controler.updateTalkSetHighPriority(req, res);
+  io.emit("newTalk", "Atualizar conversas");
+});
 
 app.delete("/deleteUser", (req, res) => {
   controler.deleteUser(req, res);

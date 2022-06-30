@@ -33,6 +33,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello World!" });
 });
 
+app.post("/createCompany", (req, res) => {
+  controler.createCompany(req, res);
+});
+
 app.post("/createUser", (req, res) => {
   controler.createUser(req, res);
 });
@@ -40,6 +44,10 @@ app.post("/createUser", (req, res) => {
 app.post("/createTalk", (req, res) => {
   controler.createTalk(req, res);
   io.emit("newTalk", "Atualizar conversas");
+});
+
+app.get("/findAllCompanies", (req, res) => {
+  controler.findAllCompanies(req, res);
 });
 
 app.get("/findAllUser", async (req, res) => {
@@ -62,6 +70,10 @@ app.get("/findAllOffices", (req, res) => {
   controler.findAllOffices(req, res);
 });
 
+app.get("/findOneCompany", (req, res) => {
+  controler.findOneCompany(req, res);
+});
+
 app.get("/findOneUser", (req, res) => {
   controler.findOneUser(req, res);
 });
@@ -82,6 +94,10 @@ app.get("/findAllTalkByUser", (req, res) => {
   controler.findAllTalkByUser(req, res);
 });
 
+app.post("/updateCompany", (req, res) => {
+  controler.updateCompany(req, res);
+});
+
 app.post("/updateUser", (req, res) => {
   controler.updateUser(req, res);
   io.emit("userUpdated", "Atualizar o time");
@@ -100,6 +116,10 @@ app.post("/updateTalkToSignInUser", (req, res) => {
 app.post("/updateTalkSetHighPriority", (req, res) => {
   controler.updateTalkSetHighPriority(req, res);
   io.emit("newTalk", "Atualizar conversas");
+});
+
+app.delete("/deleteCompany", (req, res) => {
+  controler.deleteCompany(req, res);
 });
 
 app.delete("/deleteUser", (req, res) => {

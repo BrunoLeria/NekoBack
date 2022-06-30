@@ -252,6 +252,9 @@ exports.findAllOffices = (req, res) => {
 
 // Retrieve one Company from the database.
 exports.findOneCompany = async (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({ message: "Id não fornecido." });
+  }
   await Companies.findByPk(req.query.id)
     .then((data) => {
       if (!data) {
@@ -270,6 +273,11 @@ exports.findOneCompany = async (req, res) => {
 
 // Retrieve one Talk.
 exports.findOneTalkByChatId = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Chat Id não fornecido.",
+    });
+  }
   Talk.findAll({
     where: { tlk_chat_id: req.query.id },
     order: [["tlk_date_time"], ["tlk_chat_id"]],
@@ -320,6 +328,9 @@ exports.findAllTalkByUser = (req, res) => {
 };
 // Find a single User with an id
 exports.findOneUser = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({ message: "Id não fornecido." });
+  }
   User.findByPk(req.query.id)
     .then((data) => {
       if (!data) {
@@ -337,6 +348,9 @@ exports.findOneUser = (req, res) => {
 };
 // Find a single User with an email
 exports.findOneUserByEmail = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({ message: "Id não fornecido." });
+  }
   User.findOne({ where: { usu_email: req.query.email } })
     .then((data) => {
       if (!data) {
@@ -354,6 +368,9 @@ exports.findOneUserByEmail = (req, res) => {
 };
 // Find a single Talk with an id
 exports.findOneTalk = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({ message: "Id não fornecido." });
+  }
   Talk.findByPk(req.query.id)
     .then((data) => {
       if (!data) {
@@ -371,7 +388,18 @@ exports.findOneTalk = (req, res) => {
 };
 //Update a Company with an id
 exports.updateCompany = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Dados não fornecidos.",
+    });
+  }
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
+
   Companies.update(req.body, { where: { com_identification: id } })
     .then((data) => {
       if (data == 0) {
@@ -392,6 +420,16 @@ exports.updateCompany = (req, res) => {
 
 // Update a User by the id in the request
 exports.updateUser = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Dados não fornecidos.",
+    });
+  }
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
 
   User.update(req.body, {
@@ -416,6 +454,16 @@ exports.updateUser = (req, res) => {
 };
 // Update a Talk by the id in the request
 exports.updateTalk = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Dados não fornecidos.",
+    });
+  }
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
 
   Talk.update(req.body, {
@@ -440,6 +488,16 @@ exports.updateTalk = (req, res) => {
 };
 // Update all Talks with a given chat id with a given user id
 exports.updateTalkToSignInUser = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Dados não fornecidos.",
+    });
+  }
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
 
   Talk.update(req.body, {
@@ -464,6 +522,16 @@ exports.updateTalkToSignInUser = (req, res) => {
 };
 // Update a Talk by the id in the request
 exports.updateTalkSetHighPriority = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Dados não fornecidos.",
+    });
+  }
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
   const instance = req.query.instance;
 
@@ -491,6 +559,11 @@ exports.updateTalkSetHighPriority = (req, res) => {
 };
 // Delete a User with the specified id in the request
 exports.deleteUser = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
 
   User.destroy({
@@ -515,6 +588,11 @@ exports.deleteUser = (req, res) => {
 };
 // Delete a Talk with the specified id in the request
 exports.deleteTalk = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
 
   Talk.destroy({
@@ -538,6 +616,11 @@ exports.deleteTalk = (req, res) => {
     });
 };
 exports.deleteCompany = (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send({
+      message: "Id não fornecido.",
+    });
+  }
   const id = req.query.id;
 
   Company.destroy({

@@ -75,6 +75,7 @@ exports.createUser = async (req, res) => {
     usu_photo: req.body.usu_photo,
     usu_fk_ofc_identification: req.body.usu_fk_ofc_identification,
     usu_fk_sts_identification: req.body.usu_fk_sts_identification,
+    usu_fk_cpn_identification: req.body.usu_fk_cpn_identification,
     usu_is_admin: req.body.usu_is_admin,
   })
     .then((data) => {

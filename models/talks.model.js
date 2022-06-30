@@ -12,8 +12,12 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      tlk_fk_cpn_identification: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       tlk_message: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT("long"),
         allowNull: false,
       },
       tlk_date_time: {

@@ -59,6 +59,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      usu_fk_cpn_identification: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       usu_is_admin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

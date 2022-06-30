@@ -299,7 +299,7 @@ exports.findOneTalkByChatId = (req, res) => {
 // Find all Talks from the database with a given user id
 exports.findAllTalkByUser = (req, res) => {
   const maxDaysFromLastMessage = new Date();
-  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 30);
+  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 2);
 
   Talk.findAll({
     where: {
@@ -309,6 +309,34 @@ exports.findAllTalkByUser = (req, res) => {
       tlk_date_time: {
         [Op.gt]: maxDaysFromLastMessage,
       },
+      tlk_fk_cpn_identification: req.query.idCompany,
+    },
+    order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
+  })
+    .then((data) => {
+      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+        return res.send({
+          message: "Nenhuma conversa encontrada.",
+        });
+      }
+      return res.status(200).send(data);
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "Erro encontrado ao buscar conversas.",
+      });
+    });
+};
+exports.findAllTalkByCompany = (req, res) => {
+  const maxDaysFromLastMessage = new Date();
+  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 2);
+
+  Talk.findAll({
+    where: {
+      tlk_date_time: {
+        [Op.gt]: maxDaysFromLastMessage,
+      },
+      tlk_fk_cpn_identification: req.query.idCompany,
     },
     order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
   })

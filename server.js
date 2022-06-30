@@ -94,6 +94,10 @@ app.get("/findAllTalkByUser", (req, res) => {
   controler.findAllTalkByUser(req, res);
 });
 
+app.get("/findAllTalkByCompany", (req, res) => {
+  controler.findAllTalkByCompany(req, res);
+});
+
 app.post("/updateCompany", (req, res) => {
   controler.updateCompany(req, res);
 });

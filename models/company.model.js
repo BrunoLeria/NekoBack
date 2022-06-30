@@ -38,17 +38,17 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       defaultValue: "",
     },
-    cpn_guild_name: {
+    cpn_company_name: {
       type: Sequelize.STRING(250),
       allowNull: false,
       defaultValue: "",
     },
-    cpn_guild_document: {
+    cpn_company_document: {
       type: Sequelize.STRING(20),
       allowNull: false,
       defaultValue: "",
     },
-    cpn_guild_fantasy_name: {
+    cpn_company_fantasy_name: {
       type: Sequelize.STRING(250),
       allowNull: false,
       defaultValue: "",

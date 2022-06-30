@@ -377,8 +377,8 @@ exports.findOneUser = (req, res) => {
 };
 // Find a single User with an email
 exports.findOneUserByEmail = (req, res) => {
-  if (!req.query.id) {
-    return res.status(400).send({ message: "Id não fornecido." });
+  if (!req.query.email) {
+    return res.status(400).send({ message: "Email não fornecido." });
   }
   User.findOne({ where: { usu_email: req.query.email } })
     .then((data) => {

@@ -43,7 +43,7 @@ app.post("/createUser", (req, res) => {
 
 app.post("/createTalk", (req, res) => {
   controler.createTalk(req, res);
-  io.emit("newTalk", "Atualizar conversas");
+  io.emit("newTalk", req.body);
 });
 
 app.get("/findAllCompanies", (req, res) => {
@@ -147,6 +147,6 @@ const io = new Server(httpsServer, {
 io.on("connection", (socket) => {
   console.log("Conection to socket.io");
   socket.on("message", ({ name, message }) => {
-    console.log(name, message);
+    console.log(name);
   });
 });

@@ -372,7 +372,8 @@ exports.findOneUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao buscar usuário com id = " + req.query.id,
+        message:
+          err.message || "Erro ao buscar usuário com id = " + req.query.id,
       });
     });
 };
@@ -392,7 +393,9 @@ exports.findOneUserByEmail = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao buscar usuário com e-mail = " + req.query.email,
+        message:
+          err.message ||
+          "Erro ao buscar usuário com e-mail = " + req.query.email,
       });
     });
 };
@@ -412,7 +415,8 @@ exports.findOneTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao buscar coversa com id = " + req.query.id,
+        message:
+          err.message || "Erro ao buscar coversa com id = " + req.query.id,
       });
     });
 };
@@ -478,7 +482,7 @@ exports.updateUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao atualizar o usuário com o id = " + id,
+        message: err.message || "Erro ao atualizar o usuário com o id = " + id,
       });
     });
 };
@@ -512,7 +516,7 @@ exports.updateTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao atualizar a conversa com o id = " + id,
+        message: err.message || "Erro ao atualizar a conversa com o id = " + id,
       });
     });
 };
@@ -546,7 +550,7 @@ exports.updateTalkToSignInUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao atualizar a conversa com o id = " + id,
+        message: err.message || "Erro ao atualizar a conversa com o id = " + id,
       });
     });
 };
@@ -583,7 +587,7 @@ exports.updateTalkSetHighPriority = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao atualizar a conversa com o id = " + id,
+        message: err.message || "Erro ao atualizar a conversa com o id = " + id,
       });
     });
 };
@@ -612,7 +616,7 @@ exports.deleteUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao deletar o usuário com o id = " + id,
+        message: err.message || "Erro ao deletar o usuário com o id = " + id,
       });
     });
 };
@@ -641,7 +645,7 @@ exports.deleteTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao deletar a conversa com o id = " + id,
+        message: err.message || "Erro ao deletar a conversa com o id = " + id,
       });
     });
 };
@@ -669,7 +673,7 @@ exports.deleteCompany = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: "Erro ao deletar a empresa com o id = " + id,
+        message: err.message || "Erro ao deletar a empresa com o id = " + id,
       });
     });
 };

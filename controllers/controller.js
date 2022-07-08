@@ -43,7 +43,7 @@ exports.createCompany = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao criar empresa nova.",
+        message: "Erro encontrado ao criar empresa nova. " + err.message,
       });
     });
 };
@@ -83,7 +83,7 @@ exports.createUser = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao criar usuário novo.",
+        message: "Erro encontrado ao criar usuário novo. " + err.message,
       });
     });
 };
@@ -115,14 +115,14 @@ exports.createTalk = async (req, res) => {
         })
         .catch((err) => {
           return res.status(500).send({
-            message: err.message || "Erro encontrado ao criar conversa nova.",
+            message: "Erro encontrado ao criar conversa nova. " + err.message,
           });
         });
     })
     .catch((err) => {
       return res.status(500).send({
         message:
-          err.message || "Erro encontrado ao validar conversas existentes",
+          "Erro encontrado ao validar conversas existente s" + err.message,
       });
     });
 };
@@ -139,7 +139,7 @@ exports.findAllCompanies = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar empresas.",
+        message: "Erro encontrado ao buscar empresas. " + err.message,
       });
     });
 };
@@ -156,7 +156,7 @@ exports.findAllUser = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar usuários.",
+        message: "Erro encontrado ao buscar usuários. " + err.message,
       });
     });
 };
@@ -187,7 +187,7 @@ exports.findAllTeam = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar usuários.",
+        message: "Erro encontrado ao buscar usuários. " + err.message,
       });
     });
 };
@@ -206,7 +206,7 @@ exports.findAllTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar conversas.",
+        message: "Erro encontrado ao buscar conversas. " + err.message,
       });
     });
 };
@@ -224,7 +224,7 @@ exports.findAllStatuses = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar status.",
+        message: "Erro encontrado ao buscar status. " + err.message,
       });
     });
 };
@@ -247,7 +247,7 @@ exports.findAllOffices = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao cargo status.",
+        message: "Erro encontrado ao cargo status. " + err.message,
       });
     });
 };
@@ -268,7 +268,7 @@ exports.findOneCompany = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar empresa.",
+        message: "Erro encontrado ao buscar empresa. " + err.message,
       });
     });
 };
@@ -294,7 +294,7 @@ exports.findOneTalkByChatId = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar conversas.",
+        message: "Erro encontrado ao buscar conversas. " + err.message,
       });
     });
 };
@@ -325,7 +325,7 @@ exports.findAllTalkByUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar conversas.",
+        message: "Erro encontrado ao buscar conversas. " + err.message,
       });
     });
 };
@@ -352,7 +352,7 @@ exports.findAllTalkByCompany = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro encontrado ao buscar conversas.",
+        message: "Erro encontrado ao buscar conversas. " + err.message,
       });
     });
 };
@@ -373,7 +373,10 @@ exports.findOneUser = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message:
-          err.message || "Erro ao buscar usuário com id = " + req.query.id,
+          "Erro ao buscar usuário com id = " +
+          req.query.id +
+          ". " +
+          err.message,
       });
     });
 };
@@ -394,8 +397,10 @@ exports.findOneUserByEmail = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message:
-          err.message ||
-          "Erro ao buscar usuário com e-mail = " + req.query.email,
+          "Erro ao buscar usuário com e-mail = " +
+          req.query.email +
+          ". " +
+          err.message,
       });
     });
 };
@@ -416,7 +421,10 @@ exports.findOneTalk = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message:
-          err.message || "Erro ao buscar coversa com id = " + req.query.id,
+          "Erro ao buscar coversa com id = " +
+          req.query.id +
+          ". " +
+          err.message,
       });
     });
 };
@@ -447,7 +455,7 @@ exports.updateCompany = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao atualizar empresa.",
+        message: "Erro ao atualizar empresa. " + err.message,
       });
     });
 };
@@ -482,7 +490,8 @@ exports.updateUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao atualizar o usuário com o id = " + id,
+        message:
+          "Erro ao atualizar o usuário com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -516,7 +525,8 @@ exports.updateTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao atualizar a conversa com o id = " + id,
+        message:
+          "Erro ao atualizar a conversa com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -550,7 +560,8 @@ exports.updateTalkToSignInUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao atualizar a conversa com o id = " + id,
+        message:
+          "Erro ao atualizar a conversa com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -587,7 +598,8 @@ exports.updateTalkSetHighPriority = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao atualizar a conversa com o id = " + id,
+        message:
+          "Erro ao atualizar a conversa com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -616,7 +628,8 @@ exports.deleteUser = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao deletar o usuário com o id = " + id,
+        message:
+          "Erro ao deletar o usuário com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -645,7 +658,8 @@ exports.deleteTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao deletar a conversa com o id = " + id,
+        message:
+          "Erro ao deletar a conversa com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -673,7 +687,8 @@ exports.deleteCompany = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Erro ao deletar a empresa com o id = " + id,
+        message:
+          "Erro ao deletar a empresa com o id = " + id + ". " + err.message,
       });
     });
 };
@@ -691,7 +706,7 @@ exports.deleteAllUser = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all usuários.",
+          "Some error occurred while removing all usuários. " + err.message,
       });
     });
 };
@@ -708,7 +723,7 @@ exports.deleteAllTalk = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send({
-        message: err.message || "Some error occurred while removing all talks.",
+        message: "Some error occurred while removing all talks. " + err.message,
       });
     });
 };
@@ -726,7 +741,7 @@ exports.deleteAllCompanies = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all companies.",
+          "Some error occurred while removing all companies. " + err.message,
       });
     });
 };

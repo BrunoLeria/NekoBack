@@ -61,7 +61,6 @@ exports.createUser = async (req, res) => {
   await User.create({
     usu_name: req.body.usu_name,
     usu_email: req.body.usu_email,
-    usu_password: req.body.usu_password,
     usu_birthday: req.body.usu_birthday,
     usu_phone: req.body.usu_phone,
     usu_postal_code: req.body.usu_postal_code,

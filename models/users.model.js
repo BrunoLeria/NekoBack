@@ -15,9 +15,6 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         unique: true,
       },
-      usu_password: {
-        type: Sequelize.STRING,
-      },
       usu_birthday: {
         type: Sequelize.DATEONLY,
       },

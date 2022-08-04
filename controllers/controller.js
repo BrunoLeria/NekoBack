@@ -328,24 +328,27 @@ exports.findAllTalkByUser = (req, res) => {
       });
     });
 };
-exports.findAllTalkByCompany = (req, res) => {
+exports.findAllTalkByCompany = async (req, res) => {
   const maxDaysFromLastMessage = new Date();
   maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 5);
 
   try {
-    const data = await sequelize.query('SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = 120 GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC', {
-      type: QueryTypes.SELECT
-    });
+    const data = await sequelize.query(
+      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = 120 GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
     if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
-        return res.send({
-          message: "Nenhuma conversa encontrada.",
-        });
-    }
-      return res.status(200).send(data);
-  } catch (err) {
-      return res.status(500).send({
-        message: "Erro encontrado ao buscar conversas. " + err.message,
+      return res.send({
+        message: "Nenhuma conversa encontrada.",
       });
+    }
+    return res.status(200).send(data);
+  } catch (err) {
+    return res.status(500).send({
+      message: "Erro encontrado ao buscar conversas. " + err.message,
+    });
   }
 };
 // Find a single User with an id

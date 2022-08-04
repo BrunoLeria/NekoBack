@@ -5,6 +5,7 @@ const Talk = db.talks;
 const Statuses = db.statuses;
 const Offices = db.offices;
 const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
 
 // Create and Save a ne company
 exports.createCompany = async (req, res) => {

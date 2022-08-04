@@ -356,25 +356,6 @@ exports.findAllTalkByCompany = (req, res) => {
       });
     });
 };
-exports.findAllTalksLastMessage = (req, res) => {
-  Talk.findAll({
-    where: {},
-    order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
-  })
-    .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
-        return res.send({
-          message: "Nenhuma conversa encontrada.",
-        });
-      }
-      return res.status(200).send(data);
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        message: "Erro encontrado ao buscar conversas. " + err.message,
-      });
-    });
-};
 // Find a single User with an id
 exports.findOneUser = (req, res) => {
   if (!req.query.id) {

@@ -332,29 +332,21 @@ exports.findAllTalkByCompany = (req, res) => {
   const maxDaysFromLastMessage = new Date();
   maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 5);
 
-  Talk.findAll({
-    where: {
-      tlk_date_time: {
-        [Op.gt]: maxDaysFromLastMessage,
-      },
-      tlk_fk_cpn_identification: req.query.idCompany,
-    },
-    order: [["tlk_date_time"], ["tlk_high_priority"]],
-    group: "tlk_chat_id",
-  })
-    .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+  try {
+    const data = await sequelize.query('SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = 120 GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC', {
+      type: QueryTypes.SELECT
+    });
+    if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
         return res.send({
           message: "Nenhuma conversa encontrada.",
         });
-      }
+    }
       return res.status(200).send(data);
-    })
-    .catch((err) => {
+  } catch (err) {
       return res.status(500).send({
         message: "Erro encontrado ao buscar conversas. " + err.message,
       });
-    });
+  }
 };
 // Find a single User with an id
 exports.findOneUser = (req, res) => {

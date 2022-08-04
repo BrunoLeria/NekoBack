@@ -339,7 +339,7 @@ exports.findAllTalkByCompany = (req, res) => {
       },
       tlk_fk_cpn_identification: req.query.idCompany,
     },
-    order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
+    order: [["tlk_date_time"], ["tlk_high_priority"]],
     group: "tlk_chat_id",
   })
     .then((data) => {

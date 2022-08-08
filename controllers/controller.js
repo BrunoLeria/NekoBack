@@ -301,42 +301,29 @@ exports.findOneTalkByChatId = (req, res) => {
 };
 // Find all Talks from the database with a given user id
 exports.findAllTalkByUser = (req, res) => {
-  const maxDaysFromLastMessage = new Date();
-  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 5);
-
-  Talk.findAll({
-    where: {
-      tlk_fk_usu_identification: {
-        [Op.or]: [1, req.query.id],
-      },
-      tlk_date_time: {
-        [Op.gt]: maxDaysFromLastMessage,
-      },
-      tlk_fk_cpn_identification: req.query.idCompany,
-    },
-    order: [["tlk_date_time"], ["tlk_chat_id"], ["tlk_high_priority"]],
-  })
-    .then((data) => {
-      if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
-        return res.send({
-          message: "Nenhuma conversa encontrada.",
-        });
-      }
-      return res.status(200).send(data);
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        message: "Erro encontrado ao buscar conversas. " + err.message,
-      });
-    });
-};
-exports.findAllTalkByCompany = async (req, res) => {
-  const maxDaysFromLastMessage = new Date();
-  maxDaysFromLastMessage.setDate(maxDaysFromLastMessage.getDate() - 5);
-
   try {
     const data = await sequelize.query(
-      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = 120 GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
+      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = "+ req.query.idCompany +" AND (tlk_fk_usu_identification = 1 OR tlk_fk_usu_identification = "+ req.query.id +") GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
+    if (data.length < 1 && data.every((talk) => talk instanceof Talk)) {
+      return res.send({
+        message: "Nenhuma conversa encontrada.",
+      });
+    }
+    return res.status(200).send(data);
+  } catch (err) {
+    return res.status(500).send({
+      message: "Erro encontrado ao buscar conversas. " + err.message,
+    });
+  }
+};
+exports.findAllTalkByCompany = async (req, res) => {
+  try {
+    const data = await sequelize.query(
+      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = "+ req.query.idCompany +" GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
       {
         type: QueryTypes.SELECT,
       }

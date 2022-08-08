@@ -300,10 +300,14 @@ exports.findOneTalkByChatId = (req, res) => {
     });
 };
 // Find all Talks from the database with a given user id
-exports.findAllTalkByUser = (req, res) => {
+exports.findAllTalkByUser = async (req, res) => {
   try {
     const data = await sequelize.query(
-      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = "+ req.query.idCompany +" AND (tlk_fk_usu_identification = 1 OR tlk_fk_usu_identification = "+ req.query.id +") GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
+      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = " +
+        req.query.idCompany +
+        " AND (tlk_fk_usu_identification = 1 OR tlk_fk_usu_identification = " +
+        req.query.id +
+        ") GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
       {
         type: QueryTypes.SELECT,
       }
@@ -323,7 +327,9 @@ exports.findAllTalkByUser = (req, res) => {
 exports.findAllTalkByCompany = async (req, res) => {
   try {
     const data = await sequelize.query(
-      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = "+ req.query.idCompany +" GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
+      "SELECT * FROM talks WHERE `tlk_identification` IN ( SELECT MAX(`tlk_identification`) FROM talks WHERE tlk_fk_cpn_identification = " +
+        req.query.idCompany +
+        " GROUP BY `tlk_chat_id` ) ORDER BY `talks`.`tlk_date_time` DESC",
       {
         type: QueryTypes.SELECT,
       }

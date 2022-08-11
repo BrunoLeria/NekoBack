@@ -102,7 +102,7 @@ exports.createTalk = async (req, res) => {
       await Talk.create({
         tlk_fk_usu_identification: data ? data.tlk_fk_usu_identification : 1,
         tlk_fk_cpn_identification: req.body.tlk_fk_cpn_identification,
-        tlk_fk_ftr_identification: req.body.tlk_fk_ftr_identification,
+        tlk_fk_ftr_identification: data && data.tlk_high_priority ? data.tlk_fk_ftr_identification : 1,
         tlk_message: req.body.tlk_message,
         tlk_date_time: req.body.tlk_date_time,
         tlk_client: req.body.tlk_client,
@@ -111,6 +111,7 @@ exports.createTalk = async (req, res) => {
         tlk_from_me: req.body.tlk_from_me,
         tlk_robot_instance: req.body.tlk_robot_instance,
         tlk_robot_token: req.body.tlk_robot_token,
+        tlk_high_priority: data ? data.tlk_high_priority : 0,
       })
         .then((data) => {
           return res.status(200).send("Conversa criada com sucesso!");

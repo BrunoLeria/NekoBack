@@ -16,6 +16,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      tlk_fk_ftr_identification: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       tlk_message: {
         type: Sequelize.TEXT("long"),
         allowNull: false,

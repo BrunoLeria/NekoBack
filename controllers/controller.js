@@ -102,6 +102,7 @@ exports.createTalk = async (req, res) => {
       await Talk.create({
         tlk_fk_usu_identification: data ? data.tlk_fk_usu_identification : 1,
         tlk_fk_cpn_identification: req.body.tlk_fk_cpn_identification,
+        tlk_fk_ftr_identification: req.body.tlk_fk_ftr_identification,
         tlk_message: req.body.tlk_message,
         tlk_date_time: req.body.tlk_date_time,
         tlk_client: req.body.tlk_client,

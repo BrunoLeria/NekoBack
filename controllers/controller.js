@@ -96,13 +96,15 @@ exports.createTalk = async (req, res) => {
       message: err || "Conteúdo não pode estar vazio!",
     });
   }
+  console.log(req);
   await Talk.findOne({ where: { tlk_chat_id: req.body.tlk_chat_id } })
     .then(async (data) => {
       // Save Talk in the database
       await Talk.create({
         tlk_fk_usu_identification: data ? data.tlk_fk_usu_identification : 1,
         tlk_fk_cpn_identification: req.body.tlk_fk_cpn_identification,
-        tlk_fk_ftr_identification: data && data.tlk_high_priority ? data.tlk_fk_ftr_identification : 1,
+        tlk_fk_ftr_identification:
+          data && data.tlk_high_priority ? data.tlk_fk_ftr_identification : 1,
         tlk_message: req.body.tlk_message,
         tlk_date_time: req.body.tlk_date_time,
         tlk_client: req.body.tlk_client,

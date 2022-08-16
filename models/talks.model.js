@@ -55,6 +55,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       tlk_high_priority: {
         type: Sequelize.BOOLEAN,
+        defaultValue: 0,
       },
     },
     {

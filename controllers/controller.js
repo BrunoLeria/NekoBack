@@ -96,7 +96,6 @@ exports.createTalk = async (req, res) => {
       message: err || "Conteúdo não pode estar vazio!",
     });
   }
-  console.log(req);
   await Talk.findOne({ where: { tlk_chat_id: req.body.tlk_chat_id } })
     .then(async (data) => {
       // Save Talk in the database

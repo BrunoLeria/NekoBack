@@ -308,9 +308,11 @@ exports.findAllTalkByUser = async (req, res) => {
     const data = await sequelize.query(
       "SELECT `tlk_identification`, `tlk_fk_usu_identification`, `tlk_fk_cpn_identification`, `tlk_fk_ftr_identification`, `tlk_message`, `tlk_date_time`, `tlk_client`, `tlk_chat_id` AS chat_id, `tlk_chat_name`, `tlk_from_me`, `tlk_robot_instance`, `tlk_robot_token`, `tlk_high_priority`, ( SELECT Max(`tlk_date_time`) FROM talks WHERE tlk_fk_cpn_identification = " +
         req.query.idCompany +
-        "  AND (tlk_fk_usu_identification = 1 OR tlk_fk_usu_identification = " +
+        " AND (tlk_fk_usu_identification = 1 OR tlk_fk_usu_identification = " +
         req.query.id +
-        " AND `tlk_from_me` = 1 AND `tlk_chat_id` = chat_id ) AS data_ultima_resposta FROM talks WHERE tlk_identification IN ( SELECT Max(tlk_identification) FROM talks WHERE tlk_fk_cpn_identification = 1 GROUP BY tlk_chat_id ) ORDER BY talks.tlk_date_time DESC",
+        " AND `tlk_from_me` = 1 AND `tlk_chat_id` = chat_id ) AS data_ultima_resposta FROM talks WHERE tlk_identification IN ( SELECT Max(tlk_identification) FROM talks WHERE tlk_fk_cpn_identification = " +
+        req.query.idCompany +
+        " GROUP BY tlk_chat_id ) ORDER BY talks.tlk_date_time DESC",
       {
         type: QueryTypes.SELECT,
       }
@@ -332,7 +334,9 @@ exports.findAllTalkByCompany = async (req, res) => {
     const data = await sequelize.query(
       "SELECT `tlk_identification`, `tlk_fk_usu_identification`, `tlk_fk_cpn_identification`, `tlk_fk_ftr_identification`, `tlk_message`, `tlk_date_time`, `tlk_client`, `tlk_chat_id` AS chat_id, `tlk_chat_name`, `tlk_from_me`, `tlk_robot_instance`, `tlk_robot_token`, `tlk_high_priority`, ( SELECT Max(`tlk_date_time`) FROM talks WHERE tlk_fk_cpn_identification = " +
         req.query.idCompany +
-        " AND `tlk_from_me` = 1 AND `tlk_chat_id` = chat_id ) AS data_ultima_resposta FROM talks WHERE tlk_identification IN ( SELECT Max(tlk_identification) FROM talks WHERE tlk_fk_cpn_identification = 1 GROUP BY tlk_chat_id ) ORDER BY talks.tlk_date_time DESC",
+        " AND `tlk_from_me` = 1 AND `tlk_chat_id` = chat_id ) AS data_ultima_resposta FROM talks WHERE tlk_identification IN ( SELECT Max(tlk_identification) FROM talks WHERE tlk_fk_cpn_identification = " +
+        req.query.idCompany +
+        " GROUP BY tlk_chat_id ) ORDER BY talks.tlk_date_time DESC",
       {
         type: QueryTypes.SELECT,
       }
